@@ -13,9 +13,29 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_security_group" "allow_tls" {
-  name        = "allow_tls"
-  description = "Allow TLS inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.main.id
+  name        = "jenkins_security_group"
+  description = "Security group for Jenkins server"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allow SSH from anywhere (adjust for better security)
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allow HTTPS (Jenkins) from anywhere
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"] # Allow all outbound traffic
+  }
 
   tags = {
     Name = "allow_tls"
@@ -28,15 +48,6 @@ resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
   from_port         = 443
   ip_protocol       = "tcp"
   to_port           = 443
-}
-
-resource "aws_ebs_volume" "cicd_vol" {
-  availability_zone = "us-east-1a"
-  size              = 5
-
-  tags = {
-    Name = "cicd_vol"
-  }
 }
 
 resource "aws_instance" "cicd" {
@@ -59,9 +70,13 @@ resource "aws_instance" "cicd" {
   }
 }
 
-resource "aws_volume_attachment" "attach_ebs" {
-  device_name = "/dev/sdh"
-  volume_id   = aws_ebs_volume.cicd_vol.id
-  instance_id = aws_instance.cicd.id
+output "instance_public_ip" {
+  value       = aws_instance.cicd.public_ip
+  description = "The public IP address of the Jenkins server."
+}
+
+output "instance_ssh_command" {
+  value       = "ssh -i \"your-key-pair.pem\" ubuntu@${aws_instance.cicd.public_ip}"
+  description = "The SSH command to connect to the Jenkins server."
 }
 
