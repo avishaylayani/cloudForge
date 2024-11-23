@@ -14,7 +14,7 @@ resource "aws_vpc" "main" {
 
 resource "aws_security_group" "allow_tls" {
   name        = "jenkins_security_group"
-  description = "Security group for Jenkins server"
+  description = "Security group for CI/CD server"
 
   ingress {
     from_port   = 22
@@ -42,28 +42,14 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
-  security_group_id = aws_security_group.allow_tls.id
-  cidr_ipv4         = aws_vpc.main.cidr_block
-  from_port         = 443
-  ip_protocol       = "tcp"
-  to_port           = 443
-}
-
 resource "aws_instance" "cicd" {
+  availability_zone = "us-east-1a"
   ami           = "ami-0866a3c8686eaeeba"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.ssh_pub.key_name
-  instance_market_options {
-    market_type = "spot"
-    spot_options {
-      max_price = 0.0031
-    }
-  }
-
+  vpc_security_group_ids = [aws_security_group.allow_tls.id]
   # user_data = file("${path.module}/script.sh")
-    user_data = file("script.sh")
-
+  user_data = file("script.sh")
 
   tags = {
     Name = "cicd_server"
@@ -76,7 +62,12 @@ output "instance_public_ip" {
 }
 
 output "instance_ssh_command" {
-  value       = "ssh -i \"your-key-pair.pem\" ubuntu@${aws_instance.cicd.public_ip}"
-  description = "The SSH command to connect to the Jenkins server."
+  value       = "ssh -i 'technion-key' ubuntu@${aws_instance.cicd.public_ip}"
+  description = "The SSH command to connect to the CI/CD server."
+}
+
+output "private_key" {
+  value     = file("technion-key")
+  sensitive = true
 }
 
