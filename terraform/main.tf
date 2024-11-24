@@ -13,7 +13,7 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_security_group" "allow_tls" {
-  name        = "jenkins_security_group"
+  name        = "cicd_security_group"
   description = "Security group for CI/CD server"
 
   ingress {
@@ -48,8 +48,8 @@ resource "aws_instance" "cicd" {
   instance_type = "t2.micro"
   key_name      = aws_key_pair.ssh_pub.key_name
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  # user_data = file("${path.module}/script.sh")
-  user_data = file("script.sh")
+  
+  #user_data = file("script.sh")
 
   tags = {
     Name = "cicd_server"
@@ -58,7 +58,7 @@ resource "aws_instance" "cicd" {
 
 output "instance_public_ip" {
   value       = aws_instance.cicd.public_ip
-  description = "The public IP address of the Jenkins server."
+  description = "The public IP address of the CD/CI server."
 }
 
 output "instance_ssh_command" {
