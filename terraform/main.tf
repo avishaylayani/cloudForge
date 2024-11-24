@@ -42,7 +42,7 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
-resource "aws_instance" "cicd" {
+resource "aws_instance" "ec2_machines" {
   availability_zone = "us-east-1a"
   ami           = "ami-0866a3c8686eaeeba"
   instance_type = "t2.micro"
@@ -50,24 +50,37 @@ resource "aws_instance" "cicd" {
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
   
   #user_data = file("script.sh")
-
+  for_each = toset(var.instances)
   tags = {
-    Name = "cicd_server"
+    name =  "${each.value}"
   }
 }
 
-output "instance_public_ip" {
-  value       = aws_instance.cicd.public_ip
-  description = "The public IP address of the CD/CI server."
-}
+# output "instance_public_ip" {
+#   value       = aws_instance.ec2_machines.public_ip
+#   description = "The public IP address of the CD/CI server."
+# }
 
-output "instance_ssh_command" {
-  value       = "ssh -i 'technion-key' ubuntu@${aws_instance.cicd.public_ip}"
-  description = "The SSH command to connect to the CI/CD server."
-}
+# output "instance_ssh_command" {
+#   value       = "ssh -i 'technion-key' ubuntu@${aws_instance.cicd.public_ip}"
+#   description = "The SSH command to connect to the CI/CD server."
+# }
 
 output "private_key" {
   value     = file("technion-key")
   sensitive = true
 }
 
+ output "test1" {
+  value = "["
+ }
+
+ output "test" {
+  value = join("\"", [for name in var.instances : name ])
+ }
+
+# [{"name":"value","i,p":"ip"}]
+
+ output "test2" {
+  value = "]"
+ }
