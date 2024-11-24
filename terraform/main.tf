@@ -57,14 +57,14 @@ resource "aws_instance" "ec2_machines" {
   }
 }
 
-resource "local_file" "output_to_file" {
+resource "local_file" "output_inventory_json" {
   content  = jsonencode([
     for instance in aws_instance.ec2_machines : {
       name = instance.tags["name"]
       ip   = instance.public_ip
     }
   ])
-  filename = "output.json"
+  filename = "inventory.json"
 }
 
 # output "instance_public_ip" {
@@ -80,14 +80,4 @@ resource "local_file" "output_to_file" {
 output "private_key" {
   value     = file("technion-key")
   sensitive = true
-}
-
-output "test" {
-  value = [
-    for instance in aws_instance.ec2_machines :
-    {
-      name = instance.tags["name"]
-      ip   = instance.public_ip
-    }
-  ]
 }

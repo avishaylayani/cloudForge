@@ -1,0 +1,9 @@
+-
+  # Hosts: lists of target hosts that we'll run playbooks on
+  hosts: all
+
+  # Tasks: list of tasks that will be executed  within play, including pre and post tasks
+  tasks:
+    - name: Copy nginx files in a block
+      debug:
+        msg: "Test"
