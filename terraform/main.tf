@@ -50,10 +50,21 @@ resource "aws_instance" "ec2_machines" {
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
   
   #user_data = file("script.sh")
+
   for_each = toset(var.instances)
   tags = {
     name =  "${each.value}"
   }
+}
+
+resource "local_file" "output_to_file" {
+  content  = jsonencode([
+    for instance in aws_instance.ec2_machines : {
+      name = instance.tags["name"]
+      ip   = instance.public_ip
+    }
+  ])
+  filename = "output.json"
 }
 
 # output "instance_public_ip" {
@@ -71,16 +82,12 @@ output "private_key" {
   sensitive = true
 }
 
- output "test1" {
-  value = "["
- }
-
- output "test" {
-  value = join("\"", [for name in var.instances : name ])
- }
-
-# [{"name":"value","i,p":"ip"}]
-
- output "test2" {
-  value = "]"
- }
+output "test" {
+  value = [
+    for instance in aws_instance.ec2_machines :
+    {
+      name = instance.tags["name"]
+      ip   = instance.public_ip
+    }
+  ]
+}
