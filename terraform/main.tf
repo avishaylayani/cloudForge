@@ -1,83 +1,36 @@
-
-resource "aws_key_pair" "ssh_pub" {
-  key_name   = "ssh_pub-key"
-  public_key = file("technion-key.pub")
+module "key_pair" {
+  source         = "./modules/key_pair"
+  key_name       = var.key_name
+  public_key_path = var.public_key_path
 }
 
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
-
-  tags = {
-    Name = "main"
-  }
+module "vpc" {
+  source            = "./modules/vpc"
+  cidr_block        = var.vpc_cidr_block
+  availability_zone = var.availability_zone
 }
 
-resource "aws_security_group" "allow_tls" {
-  name        = "cicd_security_group"
-  description = "Security group for CI/CD server"
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Allow SSH from anywhere (adjust for better security)
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Allow HTTPS (Jenkins) from anywhere
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"] # Allow all outbound traffic
-  }
-
-  tags = {
-    Name = "allow_tls"
-  }
+module "security_group" {
+  source          = "./modules/security_group"
+  vpc_id          = module.vpc.vpc_id
+  security_name   = var.security_group_name
+  ingress_rules   = var.ingress_rules
+  egress_rules    = var.egress_rules
 }
 
-resource "aws_instance" "ec2_machines" {
-  availability_zone = "us-east-1a"
-  ami           = "ami-0866a3c8686eaeeba"
-  instance_type = "t2.micro"
-  key_name      = aws_key_pair.ssh_pub.key_name
-  vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  
-  #user_data = file("script.sh")
-
-  for_each = toset(var.instances)
-  tags = {
-    name =  "${each.value}"
-  }
+module "instance" {
+  source                   = "./modules/instance"
+  ami_id                   = var.ami_id
+  instance_type            = var.instance_type
+  key_name                 = module.key_pair.key_name  # Correct reference to key_name output from key_pair module
+  vpc_security_group_ids   = [module.security_group.security_group_id]
+  instances                = var.instances
+  availability_zone        = var.availability_zone
+  subnet_id                = module.vpc.subnet_id
 }
 
-resource "local_file" "output_inventory_json" {
-  content  = jsonencode([
-    for instance in aws_instance.ec2_machines : {
-      name = instance.tags["name"]
-      ip   = instance.public_ip
-    }
-  ])
-  filename = "inventory.json"
-}
-
-# output "instance_public_ip" {
-#   value       = aws_instance.ec2_machines.public_ip
-#   description = "The public IP address of the CD/CI server."
-# }
-
-# output "instance_ssh_command" {
-#   value       = "ssh -i 'technion-key' ubuntu@${aws_instance.cicd.public_ip}"
-#   description = "The SSH command to connect to the CI/CD server."
-# }
-
-output "private_key" {
-  value     = file("technion-key")
-  sensitive = true
+module "local_file" {
+  source    = "./modules/local_file"
+  content   = module.instance.instance_inventory
+  filename  = var.inventory_filename
 }
