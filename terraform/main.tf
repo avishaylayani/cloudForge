@@ -22,7 +22,7 @@ module "instance" {
   source                   = "./modules/instance"
   ami_id                   = var.ami_id
   instance_type            = var.instance_type
-  key_name                 = module.key_pair.key_name  # Correct reference to key_name output from key_pair module
+  key_name                 = module.key_pair.key_name
   vpc_security_group_ids   = [module.security_group.security_group_id]
   instances                = var.instances
   availability_zone        = var.availability_zone

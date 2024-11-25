@@ -11,6 +11,6 @@ resource "aws_instance" "ec2_machines" {
   for_each = toset(var.instances)
 
   tags = {
-    name = each.value
+    Name = each.value
   }
 }
