@@ -1,7 +1,7 @@
 variable "key_name" {
   description = "The name of the key pair"
   type        = string
-  default     = "ssh_pub-key"
+  default     = "technion-key.pub"
 }
 
 variable "public_key_path" {

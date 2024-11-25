@@ -22,4 +22,8 @@ resource "aws_security_group" "sg" {
       cidr_blocks = egress.value.cidr_blocks
     }
   }
+
+  tags = {
+    Name = "instance_sg"
+  }
 }
