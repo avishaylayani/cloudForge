@@ -82,11 +82,18 @@ variable "instances" {
   default     = ["cicd", "k8s_master", "k8s_node1", "k8s_node2"]
 }
 
+variable "s3_buckets" {
+  description = "Names of the buckets to create"
+  type        = list(string)
+  default     = ["cicd-lajsgfhjkla", "tf-state-lajsgfhjkla"]
+}
+
 variable "availability_zone" {
   description = "Availability zone to launch instances"
   type        = string
   default     = "us-east-1a"
 }
+
 
 variable "inventory_filename" {
   description = "Filename for the inventory output"

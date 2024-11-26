@@ -34,3 +34,9 @@ module "local_file" {
   content   = module.instance.instance_inventory
   filename  = var.inventory_filename
 }
+
+module "s3_buckets" {
+  source                   = "./modules/s3_buckets"
+  s3_buckets   = var.s3_buckets
+
+}
