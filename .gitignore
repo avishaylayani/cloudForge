@@ -1,6 +1,10 @@
 # Local .terraform directories
 **.terraform*
 
+## Files generated during scripts: 
+*inventory.ini
+*inventory.json
+
 # .tfstate files
 *.tfstate
 *.tfstate.*
