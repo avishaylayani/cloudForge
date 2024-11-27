@@ -8,9 +8,13 @@ resource "aws_instance" "ec2_machines" {
   # associate_public_ip_address = true
 
 
-  for_each = toset(var.instances)
+  # for_each = toset(var.instances)
 
-  tags = {
-    Name = each.value
-  }
+  # tags = {
+  #   Name = each.value
+  # }
+
+    tags = {
+      Name = "cicd"
+    }
 }

@@ -1,3 +1,9 @@
+variable "aws_region" {
+  description = "The AWS region to deploy resources in"
+  type        = string
+  default     = "us-east-1"
+}
+
 variable "key_name" {
   description = "The name of the key pair"
   type        = string
@@ -78,8 +84,9 @@ variable "instance_type" {
 
 variable "instances" {
   description = "Names of the instances to create"
-  type        = list(string)
-  default     = ["cicd", "k8s_master", "k8s_node1", "k8s_node2"]
+  type        = string #list(string)
+  default     = "cicd"
+  #  "k8s_master", "k8s_node1", "k8s_node2"
 }
 
 variable "availability_zone" {
@@ -93,3 +100,16 @@ variable "inventory_filename" {
   type        = string
   default     = "inventory.json"
 }
+
+variable "ebs_tag_name" {
+  description = "The name of the volume"
+  type        = string
+  default     = "cloudForge_ebs"
+}
+
+variable "ebs_size" {
+  description = "The size on the volume"
+  type        = number
+  default     = 3
+}
+

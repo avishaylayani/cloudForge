@@ -20,7 +20,7 @@ variable "vpc_security_group_ids" {
 
 variable "instances" {
   description = "Names of the instances to create"
-  type        = list(string)
+  type        = string #list(string)
 }
 
 variable "availability_zone" {
