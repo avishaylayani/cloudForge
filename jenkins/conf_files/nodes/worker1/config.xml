@@ -2,8 +2,8 @@
 <slave>
   <name>worker1</name>
   <description></description>
-  <remoteFS>/home/jenkins_home</remoteFS>
-  <numExecutors>1</numExecutors>
+  <remoteFS>/var/jenkins_home</remoteFS>
+  <numExecutors>3</numExecutors>
   <mode>NORMAL</mode>
   <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
   <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@2.973.v0fa_8c0dea_f9f">
@@ -16,6 +16,6 @@
     <sshHostKeyVerificationStrategy class="hudson.plugins.sshslaves.verifiers.NonVerifyingKeyVerificationStrategy"/>
     <tcpNoDelay>true</tcpNoDelay>
   </launcher>
-  <label>worker</label>
+  <label>workers</label>
   <nodeProperties/>
 </slave>
