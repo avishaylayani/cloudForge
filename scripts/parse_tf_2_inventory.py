@@ -49,11 +49,11 @@ try:
         groups['all'].append(name)
 
         if name == "cicd":
-            groups['cicd'].append(name)
+            groups['cicd_group'].append(name)
         elif name == "k8s_master":
-            groups['k8s_master'].append(name)
+            groups['k8s_master_group'].append(name)
         elif "k8s_node" in name:
-            groups['k8s_nodes'].append(name)  # Add to k8s_nodes group
+            groups['k8s_nodes_group'].append(name)  # Add to k8s_nodes group
 
     # Create the inventory string
     inventory_lines = []
@@ -70,6 +70,7 @@ try:
 
     # Write the inventory to the file
     inventory_ini = "\n".join(inventory_lines)
+    
     with open('ansible/inventory.ini', "w") as file:
         file.write(inventory_ini)
 

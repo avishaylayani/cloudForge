@@ -38,8 +38,8 @@ module "local_file" {
   filename = var.inventory_filename
 }
 
-module "s3_buckets" {
-  source     = "./modules/s3_buckets"
-  s3_buckets = var.s3_buckets
+# module "s3_buckets" {
+#   source     = "./modules/s3_buckets"
+#   s3_buckets = var.s3_buckets
 
-}
+# }

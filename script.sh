@@ -8,3 +8,16 @@
 set -o errexit  # Exit on any command failing 
 set -o pipefail # Return non-zero status if any part of a pipeline fails
 #########################################################################
+
+cd terraform
+terraform init
+terraform apply --auto-approve
+
+cd ..
+
+python3 scripts/parse_tf_2_inventory.py
+
+cd ansible
+
+ansible-playbook docker_installation.yaml
+ansible-playbook test.yaml

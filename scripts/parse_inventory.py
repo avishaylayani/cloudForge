@@ -23,5 +23,6 @@ inventory_ini+="\n[k8s_node]\n"
 for i in inventory_json:
     if "k8s_node" in i['name']:
         inventory_ini+=i['ip']+"\n"
+        
 with open('ansible/inventory.ini', "w") as file:
     file.write(inventory_ini)
