@@ -76,10 +76,10 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "instances" {
+variable "instance" {
   description = "Names of the instances to create"
-  type        = list(string)
-  default     = ["cicd", "k8s_master", "k8s_node1", "k8s_node2"]
+  type        = string
+  default     = "cicd"
 }
 
 variable "s3_buckets" {

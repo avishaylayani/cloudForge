@@ -1,6 +1,6 @@
 module "key_pair" {
-  source         = "./modules/key_pair"
-  key_name       = var.key_name
+  source          = "./modules/key_pair"
+  key_name        = var.key_name
   public_key_path = var.public_key_path
 }
 
@@ -11,32 +11,35 @@ module "vpc" {
 }
 
 module "security_group" {
-  source          = "./modules/security_group"
-  vpc_id          = module.vpc.vpc_id
-  security_name   = var.security_group_name
-  ingress_rules   = var.ingress_rules
-  egress_rules    = var.egress_rules
+  source        = "./modules/security_group"
+  vpc_id        = module.vpc.vpc_id
+  security_name = var.security_group_name
+  ingress_rules = var.ingress_rules
+  egress_rules  = var.egress_rules
 }
 
 module "instance" {
-  source                   = "./modules/instance"
-  ami_id                   = var.ami_id
-  instance_type            = var.instance_type
-  key_name                 = module.key_pair.key_name
-  vpc_security_group_ids   = [module.security_group.security_group_id]
-  instances                = var.instances
-  availability_zone        = var.availability_zone
-  subnet_id                = module.vpc.subnet_id
+  source                 = "./modules/instance"
+  ami_id                 = var.ami_id
+  instance_type          = var.instance_type
+  key_name               = module.key_pair.key_name
+  vpc_security_group_ids = [module.security_group.security_group_id]
+  instance               = var.instance
+  availability_zone      = var.availability_zone
+  subnet_id              = module.vpc.subnet_id
 }
-
+module "ebs" {
+  source      = "./modules/ebs"
+  instance_id = module.instance.instance_id
+}
 module "local_file" {
-  source    = "./modules/local_file"
-  content   = module.instance.instance_inventory
-  filename  = var.inventory_filename
+  source   = "./modules/local_file"
+  content  = module.instance.instance_inventory
+  filename = var.inventory_filename
 }
 
 module "s3_buckets" {
-  source                   = "./modules/s3_buckets"
-  s3_buckets   = var.s3_buckets
+  source     = "./modules/s3_buckets"
+  s3_buckets = var.s3_buckets
 
 }

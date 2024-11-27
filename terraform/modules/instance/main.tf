@@ -7,10 +7,7 @@ resource "aws_instance" "ec2_machines" {
   subnet_id                   = var.subnet_id
   # associate_public_ip_address = true
 
-
-  for_each = toset(var.instances)
-
   tags = {
-    Name = "s3_'${each.value}'"
+    Name = var.instance
   }
 }
