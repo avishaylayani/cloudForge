@@ -10,6 +10,7 @@ set -o pipefail # Return non-zero status if any part of a pipeline fails
 #########################################################################
 
 cd terraform
+terraform destroy --auto-approve
 terraform init
 terraform apply --auto-approve
 

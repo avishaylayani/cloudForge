@@ -8,8 +8,8 @@
       ansible.builtin.file:
         path: /var/ebs_mount/
         state: directory
-        owner: ubuntu
-        group: ubuntu
+        owner: root
+        group: root
         mode: 0777
 
 
