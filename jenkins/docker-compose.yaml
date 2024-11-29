@@ -27,20 +27,6 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock    
             - ../reports:/home/jenkins/reports/
-    worker2-task:
-        hostname: jenkins-worker2-task
-        build:
-            context: .
-            dockerfile: Dockerfile
-
-        networks:
-            - jenkins
-        environment:
-            SSH_USERNAME: jenkins
-            SSH_USERPASS: jenkins
-        volumes:
-            - ../reports:/home/jenkins/reports/
-            - /var/run/docker.sock:/var/run/docker.sock   
 networks: 
   jenkins:
     driver: bridge
