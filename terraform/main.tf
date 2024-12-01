@@ -27,11 +27,14 @@ module "instance" {
   instance               = var.instance
   availability_zone      = var.availability_zone
   subnet_id              = module.vpc.subnet_id
+  user_data_script       = var.k8s_install_path
 }
-module "ebs" {
-  source      = "./modules/ebs"
-  instance_id = module.instance.instance_id
-}
+
+# module "ebs" {
+#   source      = "./modules/ebs"
+#   instance_id = module.instance.instance_id
+# }
+
 module "local_file" {
   source   = "./modules/local_file"
   content  = module.instance.instance_inventory

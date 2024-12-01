@@ -1,13 +1,19 @@
 variable "key_name" {
   description = "The name of the key pair"
   type        = string
-  default     = "technion-key.pub"
+  default     = "cloudforge"
 }
 
 variable "public_key_path" {
   description = "Path to the public key to use for instances"
   type        = string
-  default     = "technion-key.pub"
+  default     = "cloudforge.pub"
+}
+
+variable "k8s_install_path" {
+  description = "Path to the script for Micros K8S Installation"
+  type        = string
+  default     = "../scripts/microk8s_install.sh"
 }
 
 variable "vpc_cidr_block" {
@@ -79,13 +85,13 @@ variable "ami_id" {
 variable "instance_type" {
   description = "Instance type for the EC2 instances"
   type        = string
-  default     = "t2.micro"
+  default     = "t2.medium"
 }
 
 variable "instance" {
   description = "Names of the instances to create"
-  type        = string
-  default     = "cicd"
+  type        = list(string)
+  default     = ["microk8s_master", "microk8s_node_dev", "microk8s_node_prod"]
 }
 
 variable "s3_buckets" {
