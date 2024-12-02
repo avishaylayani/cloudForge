@@ -43,7 +43,7 @@ variable "instance_type" {
 variable "instance" {
   description = "Names of the instances to create"
   type        = list(string)
-  default     = ["microk8s_master", "microk8s_node_dev", "microk8s_node_prod"]
+  default     = ["microk8s-master", "microk8s-node-dev", "microk8s-node-prod"]
 }
 
 variable "s3_buckets" {

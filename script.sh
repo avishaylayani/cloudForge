@@ -10,6 +10,8 @@ set -o pipefail # Return non-zero status if any part of a pipeline fails
 #########################################################################
 
 cd terraform
+chmod 400 cloudforge.pem
+terraform destroy --auto-approve >> /dev/null
 terraform init >> /dev/null
 echo "INit worked fine"
 terraform fmt >> /dev/null
