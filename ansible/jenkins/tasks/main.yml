@@ -1,0 +1,10 @@
+---
+# tasks file for jenkins
+- name: mounting EBS volume
+  mount:
+    path: /sdh
+    src: /var/jenkins_home
+    opts: bind
+    fstype: none
+    state: mounted
+

@@ -1,0 +1,85 @@
+# ---
+# # tasks file for microk8s_installation
+
+#   - name: Extract token from master
+#     become: true
+#     shell: "microk8s add-node --format short"
+#     register: k8s_join
+#     run_once: true
+#     when: inventory_hostname in groups['k8s_master']
+
+#   - name: "Setting k8s command as a fact, to be run on every host"
+#     set_fact:
+#       k8s_join_cmd: "{{ k8s_join.stdout }} --worker"
+#     run_once: true
+#     when: inventory_hostname in groups['k8s_master']
+
+
+#   # - name: debugging
+#   #   debug:
+#   #     msg: "{{ k8s_join_cmd }}"
+
+#   - name: Joining from nodes
+#     become: true
+#     shell: "{{ k8s_join_cmd }}"
+#     when: inventory_hostname in groups['k8s_nodes']
+
+
+
+
+---
+  # - name: Ensure MicroK8s is installed
+  #   shell: "snap list microk8s"
+  #   register: microk8s_installed
+  #   ignore_errors: true
+
+  # - name: Install MicroK8s if not installed
+  #   shell: "snap install microk8s --classic"
+  #   when: microk8s_installed.failed
+# tasks file for microk8s_installation
+  # Ensure ubuntu user is added to the 'microk8s' group
+  - name: Add ubuntu user to the microk8s group
+    user:
+      name: ubuntu
+      group: microk8s
+      append: yes
+    become: true  # Run as root to modify user groups
+
+  # Change ownership of the .kube directory to ubuntu
+  - name: Change ownership of .kube directory
+    file:
+      path: "/home/ubuntu/.kube"
+      owner: ubuntu
+      group: microk8s
+      recurse: yes
+    become: true  # Run as root to change ownership
+
+  # Reload the user groups by running 'newgrp microk8s'
+  - name: Reload user groups to apply new group membership
+    shell: newgrp microk8s  # 'newgrp' reloads the user groups without requiring a reboot
+    become: true  # Run as root to execute newgrp
+
+
+
+  - name: Generate join token for each node
+    shell: "microk8s add-node --format short"
+    register: k8s_tokens
+    loop: "{{ groups['k8s_nodes'] }}"
+    loop_control:
+      index_var: node_index
+    changed_when: "'microk8s join' in k8s_tokens.stdout"
+    when: inventory_hostname in groups['k8s_master']  # Run this only on the master node
+
+  # CHANGED: Share tokens with all nodes by mapping node names to their corresponding join token
+  - name: Share tokens with all nodes
+    set_fact:
+      k8s_tokens_map: "{{ dict(groups['k8s_nodes'] | zip(k8s_tokens.results | map(attribute='stdout'))) }}"  # CHANGED: Corrected token mapping using zip and stdout
+    when: inventory_hostname in groups['k8s_master']  # Run this only on the master node
+
+  - name: 
+
+  # # CHANGED: Join nodes to the MicroK8s cluster using the appropriate token for each node
+  # - -: Join node to MicroK8s cluster
+  #   shell: "{{ hostvars[groups['k8s_master'][0]].k8s_tokens_map[inventory_hostname] }} --worker"  # CHANGED: Corrected usage of token mapping directly from k8s_tokens_map
+  #   when: inventory_hostname in groups['k8s_nodes']  # Run this only on the nodes, not the master
+  #   become: true  # Ensure this runs with elevated privileges on the node
