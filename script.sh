@@ -27,7 +27,7 @@ echo "$OUTPUT" | while read -r line; do
 done
 
 cd ..
-
+sleep 10
 python3 scripts/parse_inventory.py >> /dev/null
 echo "Script to create inventory worked fine"
 cd ansible

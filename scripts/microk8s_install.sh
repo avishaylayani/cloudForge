@@ -19,6 +19,8 @@ microk8s status --wait-ready
 
 # Turn on required services
 
+
+
 microk8s enable dashboard
 microk8s enable dns
 microk8s enable registry
