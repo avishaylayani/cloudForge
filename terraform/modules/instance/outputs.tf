@@ -1,15 +1,18 @@
 output "instance_inventory" {
-  value = jsonencode([{
-      name = aws_instance.ec2_machines.tags["Name"]
-      ip   = aws_instance.ec2_machines.public_ip
-  }
+  value = jsonencode([
+    for instance in aws_instance.ec2_machines : {
+      name = instance.tags["Name"]
+      ip   = instance.public_ip
+    }
   ])
 }
 
 output "instance_ssh_command" {
-  value = "${aws_instance.ec2_machines.tags.Name}: ssh -i 'filename.pem' user@${aws_instance.ec2_machines.public_ip}"
+  value = join("\n", [
+    for instance in aws_instance.ec2_machines : "${instance.tags["Name"]}: ssh -i 'terraform/cloudforge.pem' ubuntu@${instance.public_ip}"
+  ])
 }
 
-output "instance_id"{
-  value = aws_instance.ec2_machines.id
-}
+# output "instance_id"{
+#   value = aws_instance.ec2_machines.id
+# }

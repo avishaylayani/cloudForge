@@ -50,10 +50,10 @@ try:
 
         if name == "cicd":
             groups['cicd_group'].append(name)
-        elif name == "k8s_master":
-            groups['k8s_master_group'].append(name)
+        elif "master" in name:
+            groups['k8s_master'].append(name)
         elif "k8s_node" in name:
-            groups['k8s_nodes_group'].append(name)  # Add to k8s_nodes group
+            groups['k8s_nodes'].append(name)  # Add to k8s_nodes group
 
     # Create the inventory string
     inventory_lines = []

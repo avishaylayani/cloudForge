@@ -20,7 +20,7 @@ variable "vpc_security_group_ids" {
 
 variable "instance" {
   description = "Names of the instances to create"
-  type        = string
+  type        = list(string)
 }
 
 variable "availability_zone" {
@@ -30,5 +30,10 @@ variable "availability_zone" {
 
 variable "subnet_id" {
   description = "Subnet ID for the instances"
+  type        = string
+}
+
+variable "user_data_script" {
+  description = "Path to the script for Micro K8S Installation"
   type        = string
 }
