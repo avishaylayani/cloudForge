@@ -25,65 +25,80 @@ Usage:
 import json
 from collections import defaultdict
 
+# Define console colors for output
+class ConsoleColor:
+    GREEN = '\033[92m'  # Green
+    RED = '\033[91m'    # Red
+    RESET = '\033[0m'   # Reset to default color
+
+# Define input and output file paths
+source_Filename = 'terraform/inventory.json'
+output_Filename = 'ansible/inventory.ini'
+
 try:
-    # Load the JSON inventory
-    with open('terraform/inventory.json') as file:
+    # Step 1: Load the JSON inventory file
+    with open(source_Filename) as file:
         inventory_json = json.load(file)
 
-    # Initialize a dictionary to hold groups and names
-    groups = defaultdict(list)
-    host_entries = []
+    # Step 2: Initialize data structures for groups and hosts
+    groups = defaultdict(list)  # Holds group-to-host mappings
+    host_entries = []           # Holds host definitions for INI format
+    host_username = 'ubuntu'    # Default SSH username
+    host_privet_key = 'ansible_user=ubuntu ansible_ssh_private_key_file=cloudforge.pem'  # Private key for SSH
 
-    # Loop through the JSON to build the inventory structure
+    # Step 3: Process each instance in the JSON inventory
     for instance in inventory_json:
-        name = instance.get('name')
-        ip = instance.get('ip')
+        name = instance.get('name')  # Get the instance's name
+        ip = instance.get('ip')      # Get the instance's IP address
 
+        # Validate that name and IP are present
         if not name or not ip:
             raise ValueError(f"Instance data is missing 'name' or 'ip'. Instance: {instance}")
 
-        # Add the host entry with ansible_host variable
-        host_entries.append(f"{name} ansible_host={ip}")
+        # Add the host entry to the inventory with ansible-specific variables
+        host_entries.append(f"{name} ansible_host={ip} ansible_user={host_username} ansible_ssh_private_key_file={host_privet_key}")
 
-        # Add to the relevant group
+        # Add the host to the 'all' group
         groups['all'].append(name)
 
-        if name == "cicd":
-            groups['cicd_group'].append(name)
-        elif name == "k8s_master":
-            groups['k8s_master_group'].append(name)
-        elif "k8s_node" in name:
-            groups['k8s_nodes_group'].append(name)  # Add to k8s_nodes group
+        # Dynamically group hosts based on their name
+        if "master" in name:
+            groups['k8s_master_group'].append(name)  # Add to Kubernetes master group
+        elif "node" in name:
+            groups['k8s_nodes_group'].append(name)  # Add to Kubernetes nodes group
+        # Add additional groups as needed
+        # elif "some_condition" in name:
+        #     groups['some_group'].append(name)
 
-    # Create the inventory string
+    # Step 4: Build the INI-format inventory as a list of strings
     inventory_lines = []
 
-    # Add host entries to inventory
+    # Add all hosts under the 'all' group
     inventory_lines.append("[all]")
     inventory_lines.extend(host_entries)
 
-    # Add groups dynamically
+    # Add other groups dynamically
     for group, hosts in groups.items():
         if group != "all":  # Skip 'all' since it's already added
             inventory_lines.append(f"\n[{group}]")
             inventory_lines.extend(hosts)
 
-    # Write the inventory to the file
-    inventory_ini = "\n".join(inventory_lines)
-    
-    with open('ansible/inventory.ini', "w") as file:
-        file.write(inventory_ini)
+    # Step 5: Write the generated inventory to the output file
+    inventory_ini = "\n".join(inventory_lines)  # Join the inventory lines into a single string
+    with open(output_Filename, "w") as file:
+        file.write(inventory_ini)  # Save the inventory to the file
 
-    print("Ansible inventory file 'ansible/inventory.ini' has been successfully created.")
+    # Print success message
+    print(f"{ConsoleColor.GREEN} [v] Ansible inventory file {output_Filename} has been successfully created.{ConsoleColor.RESET}\n")
 
-except FileNotFoundError:
-    print("Error: The file 'terraform/inventory.json' was not found. Please ensure the file exists and the path is correct.")
-
-except json.JSONDecodeError:
-    print("Error: The file 'terraform/inventory.json' is not a valid JSON file. Please check its contents for proper JSON formatting.")
-
-except ValueError as e:
-    print(f"Error: {e}")
-
+# Step 6: Handle errors gracefully and provide meaningful output
 except Exception as e:
-    print(f"An unexpected error occurred: {e}")
+    match e:
+        case FileNotFoundError():
+            print(f"{ConsoleColor.RED} [!] The file {source_Filename} was not found. Please ensure the file exists and the path is correct.{ConsoleColor.RESET}\n")
+        case json.JSONDecodeError():
+            print(f"{ConsoleColor.RED} [!] The file {source_Filename} is not a valid JSON file. Please check its contents for proper JSON formatting.{ConsoleColor.RESET}\n")
+        case ValueError():
+            print(f"{ConsoleColor.RED} [!] {e}{ConsoleColor.RESET}\n")
+        case _:
+            print(f"{ConsoleColor.RED} [!] An unexpected error occurred: {e}{ConsoleColor.RESET}\n")
