@@ -1,5 +1,5 @@
 import json
-
+master_ip=None
 try:
     with open('terraform/inventory.json') as file:
         inventory_json = json.load(file)
@@ -9,16 +9,18 @@ try:
 
     inventory_ini+="\n[k8s_master]\n"
 
-    for i in inventory_json:
-        if "master" in i['name']:
-            inventory_ini+=i['name']+"\n"
-
     inventory_ini+="\n[k8s_nodes]\n"
 
     for i in inventory_json:
         if "node" in i['name']:
             inventory_ini+=i['name']+"\n"
-            
+    for i in inventory_json:
+        if "master" in i['name']:
+            inventory_ini+=i['name']+"\n"
+            master_ip=i['ip']
+
+    inventory_ini+="\n[all:vars]\nmaster="+master_ip
+
     with open('ansible/inventory.ini', "w") as file:
         file.write(inventory_ini)
 

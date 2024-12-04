@@ -9,8 +9,6 @@
     register: microk8s_installed
     ignore_errors: true
 
-
-    become: true
   - name: Install MicroK8s if not installed
     shell: "snap install microk8s --classic"
     when: microk8s_installed.failed
@@ -19,7 +17,7 @@
     shell: "microk8s stop && microk8s start"
     when: microk8s_installed is succeeded
 
-    
+
   # Ensure ubuntu user is added to the 'microk8s' group
   - name: Add ubuntu user to the microk8s group
     user:

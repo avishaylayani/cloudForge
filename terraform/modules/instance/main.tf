@@ -8,9 +8,7 @@ resource "aws_instance" "ec2_machines" {
 
   # associate_public_ip_address = true
   for_each = toset(var.instance)
-  user_data_base64 = base64encode("${templatefile(var.user_data_script, {
-    new_hostname   = each.value
-  })}")
+  # user_data_base64 = base64encode("${templatefile(var.user_data_script)}")
   # user_data = file(var.user_data_script,{
   #   new_hostname = each.value  
   # })

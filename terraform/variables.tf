@@ -43,7 +43,7 @@ variable "instance_type" {
 variable "instance" {
   description = "Names of the instances to create"
   type        = list(string)
-  default     = ["microk8s-master", "microk8s-node-dev", "microk8s-node-prod"]
+  default     = ["k3s-master", "k3s-node-dev", "k3s-node-prod"]
 }
 
 variable "s3_buckets" {
@@ -92,81 +92,59 @@ variable "ingress_rules" {
     cidr_blocks = list(string)
   }))
   default = [
+    # SSH Access
     {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },
+    # HTTPS Access (For web traffic)
     {
       from_port   = 443
       to_port     = 443
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },
+    # HTTP Access (For web traffic)
     {
       from_port   = 80
       to_port     = 80
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },
+    # Kubernetes API Server (for K3s server)
     {
-      from_port   = 25000
-      to_port     = 25000
+      from_port   = 6443
+      to_port     = 6443
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },
-    {
-      from_port   = 19001
-      to_port     = 19001
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = 16443
-      to_port     = 16443
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
+    # Kubelet API (for internal communication between nodes)
     {
       from_port   = 10250
       to_port     = 10250
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },
+    # Flannel VXLAN (for networking between nodes)
     {
-      from_port   = 12379
-      to_port     = 12379
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = 12380
-      to_port     = 12380
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = 179
-      to_port     = 179
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = 6783
-      to_port     = 6784
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = 6783
-      to_port     = 6784
+      from_port   = 8472
+      to_port     = 8472
       protocol    = "udp"
       cidr_blocks = ["0.0.0.0/0"]
     },
+    # etcd communication ports (used in HA setups for internal etcd)
     {
-      from_port   = 5473
-      to_port     = 5473
+      from_port   = 2379
+      to_port     = 2380
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    # NodePort Range (for accessing Kubernetes services)
+    {
+      from_port   = 30000
+      to_port     = 32767
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     }
