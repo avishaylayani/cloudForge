@@ -28,6 +28,18 @@ variable "security_group_name" {
   default     = "cicd_security_group"
 }
 
+variable "db_password" {
+  description = "db_password"
+  type        = string
+  default     = "postgres"
+}
+
+variable "db_username" {
+  description = "db_username"
+  type        = string
+  default     = "postgres"
+}
+
 variable "ami_id" {
   description = "AMI ID for the instance - (default is ubuntu)"
   type        = string

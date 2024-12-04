@@ -29,6 +29,14 @@ module "instance" {
   subnet_id              = module.vpc.subnet_id
   user_data_script       = var.k8s_install_path
 }
+
+module "rds" {
+  source                 = "./modules/rds"
+  vpc_security_group_ids = [module.security_group.security_group_id]
+  db_username            = var.db_username
+  db_password            = var.db_password
+  db_subnet_group_name   = module.vpc.rds_subnet_group
+}
 # module "ebs" {
 #   source      = "./modules/ebs"
 #   instance_id = module.instance.instance_id

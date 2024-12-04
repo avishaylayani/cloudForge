@@ -42,3 +42,14 @@ resource "aws_route_table_association" "subnet_association" {
   subnet_id      = aws_subnet.main.id
   route_table_id = aws_route_table.public_rt.id
 }
+
+
+resource "aws_db_subnet_group" "rds_group" {
+  name       = "rds"
+  vpc_id = aws_vpc.main.id
+  subnet_ids = [aws_subnet.main.id]
+
+  tags = {
+    Name = "rds"
+  }
+}

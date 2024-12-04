@@ -13,7 +13,7 @@ cd terraform
 terraform init >> /dev/null
 echo "[+]  Init worked fine"
 chmod 400 cloudforge.pem
-terraform destroy --auto-approve >> /dev/null
+# terraform destroy --auto-approve >> /dev/null
 echo "[+]  destroyed any resources, if existed"
 terraform fmt >> /dev/null
 echo "[+]  fmt worked fine, starting apply now"
