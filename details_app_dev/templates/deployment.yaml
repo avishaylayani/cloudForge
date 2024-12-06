@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: details-app
+  name: details-app-dev
 spec:
   replicas: {{ .Values.rep_set.details_app }}
   selector:
     matchLabels:
-      app: details-app
+      app: details-app-dev
       version: latest
   template:
     metadata:
       labels:
-        app: details-app
+        app: details-app-dev
         version: latest
     spec:
       containers:
-        - name: details-app
+        - name: details-app-dev
           env:          
             - name: POSTGRES_USER
               value: {{ .Values.db_pg.POSTGRES_USER }}
@@ -41,26 +41,26 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: postgres-dev
 spec:
   replicas: {{ .Values.rep_set.postgres }}
   selector:
     matchLabels:
-      app: postgres
+      app: postgres-dev
       version: latest
   template:
     metadata:
       labels:
-        app: postgres
+        app: postgres-dev
         version: latest
     spec:
-      hostname: postgres-container
+      hostname: postgres-dev-container
       volumes:
-      - name: postgres-storage
+      - name: postgres-dev-storage
         persistentVolumeClaim:
           claimName: postgres-pvc
       containers:
-        - name: postgres
+        - name: postgres-dev
           env:
             - name: POSTGRES_DB
               value: {{ .Values.db_pg.POSTGRES_DB }}
@@ -73,8 +73,8 @@ spec:
           ports:
             - containerPort: 5432 # This is the internal container port
           volumeMounts:
-            - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
+            - name: postgres-dev-storage
+              mountPath: /var/lib/dev_postgresql/data
           resources:
             requests:
               memory: "128Mi"

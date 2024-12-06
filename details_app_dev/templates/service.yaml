@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: details-app-service-latest
+  name: details-app-dev-dev-service-latest
   labels:
-    app: details-app
+    app: details-app-dev
     version: latest
 spec:
   type: LoadBalancer
   selector:
-    app: details-app
+    app: details-app-dev
     version: latest
   ports:
   - protocol: TCP
@@ -19,9 +19,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-container
+  name: postgres-dev-container
   labels:
-    app: postgres
+    app: postgres-dev
     version: latest
 spec:
   type: LoadBalancer

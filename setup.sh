@@ -21,12 +21,13 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 ( echo "[-] Something went wrong with importing private key, exiting" && rm -rf private.key && eval "$cleaning_secret_key" &&  exit 1 )
 
 # Decrypting the values file, to a one with decrypted values (Removing installed private key whether decryption succeded or fails )
-( sops -d values_encrypted.yaml > details_app_dev/values.yaml && eval "$cleaning_secret_key" && echo "[+] values file decrypted successfully") || \
+( sops -d values_encrypted_dev.yaml > details_app_dev/values.yaml && sops -d values_encrypted_prod.yaml > details_app_prod/values.yaml && eval "$cleaning_secret_key" && echo "[+] values file decrypted successfully") || \
 ( echo "[-] Something went wrong with decryption process, exiting" && eval "$cleaning_secret_key" && exit 1 )   
 
 # Deploy details_app using Helm - deletes values file 
-# ( helm install detailsapp details_app && rm -rf details_app/values.yaml && echo "[+] Deployment succeded") || \
-# ( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf details_app/values.yaml && exit 1 )
+( helm install detailsapp_prod details_app_prod && rm -rf details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
+ helm install detailsapp_dev details_app_dev && rm -rf details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
+( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf details_app/values.yaml && exit 1 )
 
 
 
