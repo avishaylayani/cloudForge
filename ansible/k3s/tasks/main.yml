@@ -1,0 +1,9 @@
+---
+
+  - name: Include Master Tasks
+    include_tasks:
+      file: master.yml
+  
+  - name: Include Nodes Tasks
+    include_tasks:
+      file: nodes.yml

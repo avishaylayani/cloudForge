@@ -37,3 +37,13 @@ variable "user_data_script" {
   description = "Path to the script for Micro K8S Installation"
   type        = string
 }
+
+variable "username" {
+  description = "Username of the instance"
+  type        = string
+}
+
+variable "private_key_path" {
+  description = "value"
+  type = string
+}

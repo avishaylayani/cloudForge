@@ -11,4 +11,18 @@ resource "aws_instance" "ec2_machines" {
   tags = {
     Name = each.value
   }
+
+  # Set the hostname using remote-exec provisioner
+  provisioner "remote-exec" {
+    inline = [
+      "sudo hostnamectl set-hostname ${each.value}",
+      "echo '127.0.0.1 ${each.value}' | sudo tee -a /etc/hosts"
+    ]
+    connection {
+      type        = "ssh"
+      user        = var.username 
+      private_key = file(var.private_key_path)
+      host        = self.public_ip
+    }
+  }
 }

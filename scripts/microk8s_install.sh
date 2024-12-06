@@ -9,27 +9,40 @@ set -o errexit  # Exit on any command failing
 set -o pipefail # Return non-zero status if any part of a pipeline fails
 #########################################################################
 
-## Resource: https://microk8s.io/
+# # Check if the alias already exists in the target file to avoid duplicate entries
+# if grep -q "alias kubectl=/home/ubuntu/.bashrc"; then
+#     echo "Alias 'kubectl' already exists in /home/ubuntu/.bashrc"
+# else
+#     # Append the alias to the target file
+#     echo "alias kubectl='microk8s kubectl'" >> /home/ubuntu/.bashrc
+#     echo "Alias 'kubectl' added to /home/ubuntu/.bashrc"
+#     # Source the updated .bashrc to apply the changes
+#     source /home/ubuntu/.bashrc
+# fi
 
-# Install MicroK8s on Linux
-sudo snap install microk8s --classic
+# # Source the updated .bashrc to apply the changes
+# source /home/ubuntu/.bashrc
 
-# Check the status while Kubernetes starts
-microk8s status --wait-ready
+# ## Resource: https://microk8s.io/
 
-# Turn on required services
+# # Install MicroK8s on Linux
+# sudo snap install microk8s --classic
 
-microk8s enable dashboard
-microk8s enable dns
-microk8s enable registry
-microk8s enable istio
+# # Check the status while Kubernetes starts
+# microk8s status --wait-ready
 
-# Start using Kubernetes
+# # Turn on required services
+# microk8s enable dashboard
+# microk8s enable dns
+# microk8s enable registry
+# microk8s enable istio
 
-microk8s kubectl get all --all-namespaces
+# # Start using Kubernetes
 
-# Access the Kubernetes dashboard
-microk8s dashboard-proxy
+# microk8s kubectl get all --all-namespaces
 
-# Start Kubernetes
-microk8s start
+# # Access the Kubernetes dashboard
+# microk8s dashboard-proxy
+
+# # Start Kubernetes
+# microk8s start

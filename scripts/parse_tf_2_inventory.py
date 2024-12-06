@@ -44,7 +44,7 @@ try:
     groups = defaultdict(list)  # Holds group-to-host mappings
     host_entries = []           # Holds host definitions for INI format
     host_username = 'ubuntu'    # Default SSH username
-    host_privet_key = 'ansible_user=ubuntu ansible_ssh_private_key_file=cloudforge.pem'  # Private key for SSH
+    host_privet_key = 'cloudforge.pem'  # Private key for SSH
 
     # Step 3: Process each instance in the JSON inventory
     for instance in inventory_json:
@@ -56,16 +56,17 @@ try:
             raise ValueError(f"Instance data is missing 'name' or 'ip'. Instance: {instance}")
 
         # Add the host entry to the inventory with ansible-specific variables
-        host_entries.append(f"{name} ansible_host={ip} ansible_user={host_username} ansible_ssh_private_key_file={host_privet_key}")
+        host_entries.append(f"{name} ansible_host={ip}") 
+                            #  ansible_user={host_username} ansible_ssh_private_key_file={host_privet_key}")
 
         # Add the host to the 'all' group
         groups['all'].append(name)
 
         # Dynamically group hosts based on their name
         if "master" in name:
-            groups['k8s_master_group'].append(name)  # Add to Kubernetes master group
+            groups['k8s_master'].append(name)  # Add to Kubernetes master group
         elif "node" in name:
-            groups['k8s_nodes_group'].append(name)  # Add to Kubernetes nodes group
+            groups['k8s_nodes'].append(name)  # Add to Kubernetes nodes group
         # Add additional groups as needed
         # elif "some_condition" in name:
         #     groups['some_group'].append(name)

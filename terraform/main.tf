@@ -28,6 +28,8 @@ module "instance" {
   availability_zone      = var.availability_zone
   subnet_id              = module.vpc.subnet_id
   user_data_script       = var.k8s_install_path
+  username               = var.username
+  private_key_path       = var.private_key_path
 }
 # module "ebs" {
 #   source      = "./modules/ebs"

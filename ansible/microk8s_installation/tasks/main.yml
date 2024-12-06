@@ -1,4 +1,17 @@
 ---
+  - name: Wait for port 22 to become available
+    ansible.builtin.wait_for:
+      host: "{{ inventory_hostname }}"
+      port: 22
+      delay: 10
+      timeout: 300
+      state: started
+      msg: "Instance {{ inventory_hostname }} is now ready!"
+
+  # - name: Set a hostname
+  #   ansible.builtin.hostname:
+  #     name: "{{ inventory_hostname }}"
+
   - name: Ensure MicroK8s is installed
     shell: "snap list microk8s"
     register: microk8s_installed
@@ -7,6 +20,10 @@
   - name: Install MicroK8s if not installed
     shell: "snap install microk8s --classic"
     when: microk8s_installed.failed
+
+  # - name: Restart Microk8s if installed, to accept the new hostname
+  #   shell: "microk8s stop && microk8s start"
+  #   when: microk8s_installed is succeeded
 
   # Ensure ubuntu user is added to the 'microk8s' group
   - name: Add ubuntu user to the microk8s group
