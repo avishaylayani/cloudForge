@@ -74,7 +74,7 @@ spec:
             - containerPort: 5432 # This is the internal container port
           volumeMounts:
             - name: postgres-dev-storage
-              mountPath: /var/lib/dev_postgresql/data
+              mountPath: /var/lib/postgresql/data
           resources:
             requests:
               memory: "128Mi"
