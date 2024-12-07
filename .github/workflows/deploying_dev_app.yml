@@ -5,26 +5,16 @@ on:
     branches:
       - details_app_dev
 jobs:
-  docker-build:
-    name: Build&Push development image
+  deploy:
     runs-on: ubuntu-latest
-    
-    steps:
-      - name: Testing
-        run: |
-          echo "$GITHUB_REPOSITORY"
-          echo "$GITHUB_REPOSITORY_OWNER"
-          echo "${{ DOCKER_USERNAME }}"
- 
-      - name: login to docker hub
-        run: |
-          cat $DOCKER_PASSWORD | docker login -u $vars.DOCKER_USERNAME -p --password-stdin 
-      
-      # - name: Building the image
-      #   run: docker build -t "details_app:test" .
-      
-      # - name: Tagging the image
-      #   run: docker tag details_app:test ${{ vars.DOCKER_USERNAME }} /details_app:test
 
-      # - name: Pushing the image
-      #   run: docker push alayani/details_app:test    
+    env: # Define environment variables
+      DOCKER_USERNAME: your-username-variable-here
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Login to Docker Hub
+      run: |
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u $DOCKER_USERNAME --password-stdin
