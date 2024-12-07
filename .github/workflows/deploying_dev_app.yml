@@ -18,7 +18,7 @@ jobs:
  
       - name: login to docker hub
         run: |
-          cat $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME -p --password-stdin 
+          cat $DOCKER_PASSWORD | docker login -u $vars.DOCKER_USERNAME -p --password-stdin 
       
       # - name: Building the image
       #   run: docker build -t "details_app:test" .
