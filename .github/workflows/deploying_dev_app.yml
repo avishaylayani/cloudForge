@@ -11,11 +11,11 @@ jobs:
     
     steps:
       - name: Testing
-        run: '$DOCKER_USERNAME'
-      - name: testing2
-        run: '$DOCKER_PASSWORD'
-      - name: testing3
-        run: '$details_app_dev'
+        shell: bash
+        run: |
+          echo "$details_app_dev"
+          echo "$DOCKER_USERNAME"
+          echo "$DOCKER_PASSWORD"
       # - name: login to docker hub
       #   uses: docker/login-action@v2
       #   with:
