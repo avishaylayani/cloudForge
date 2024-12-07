@@ -1,0 +1,43 @@
+rep_set:
+    details_app: 2
+    postgres: 1
+images:
+    details_app: alayani/details_app:stable
+    postgres: postgres:latest
+db_pg:
+    POSTGRES_USER: pgadmin
+    POSTGRES_DB: postgres
+    DBHOST: postgres-container
+    DBNAME: postgres
+secrets:
+    POSTGRES_PASSWORD: ENC[AES256_GCM,data:IKHH2Lkc8g==,iv:pjOY+6gwLK4wmEHaz4HT4qB53gGpusnq2RP0EqBUGKo=,tag:/6rmU0UJ1Ggm4fgtPguUVA==,type:str]
+    SECRET_KEY: ENC[AES256_GCM,data:ZwzMp0036GLZYVeIVeRklR0i7y5dkBDsrBUqbOoE,iv:xFGPrxnzuI2tiTwKU37kztYMRKEUHz6MCT7QqqgO9Aw=,tag:3pD0/Sdg+YYTX/l4qv9/XQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-12-06T21:55:07Z"
+    mac: ENC[AES256_GCM,data:D4098JgGUrSUI2mMTI82wpx8u06PeED3bP2/8J5bB3mOLxJzIgj9Q97uZYIsT7sp38G/TnCs1cnqKq+OJWyne+lr71onsgX/nVYVVlHnKudg/vn2AUuKA9Bh0ccaPwdyTuWvlZiSk17jck865VeKmoiVy6kdE0MMbJ/k9phg258=,iv:mzKJkCjPN01u0gE5atDU7fLXuNmRo0RxPAjsHltT2HE=,tag:PcqM437ObE3FEolFi14xdQ==,type:str]
+    pgp:
+        - created_at: "2024-12-06T21:55:07Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQGMA7QAHOCQVISkAQv/dgJvpN3ggywgexXNvFyYqaCqhhHPR011n1JCRecoZWyD
+            MA1dKbxjKkD8XFSfg4t6Ugh/ZXvyMafROplZO2ZoD2l6JHRnHp2BGgkkYmhE5BbG
+            gFss/cGPYe365rhDI7k/bcub24///aGps1eiHacYnQDodbQ1Nb6VUgXxaAPLDaJf
+            MgZUwyW+73Yl2RX55cY8FuKKt/3VAdkavmlWcxOxfjjLHsiPX7/UcuJr+GtLo4Aa
+            1LQVVTidbqY//y9T84hO9JCm/ocDY7B8hSItZODsTF1Q4gSFgJ3orqfjrP60ahJo
+            ZSYvyXB+pNpJk0s8FZnY1FvK6kI7l8rQBrjcJL/tHkPWqTNI0NFDC6uSphNFYTeE
+            K6kfx6muhrHEj8Z0IuI+cghxo3nqnkvekJ4lU0qc5btyv+0AzpDSpABZUhMexIiU
+            NZHO8Mg67xA3ydj2MJSn1BATmWYIEJAlHWX1ONEBkCnoDj4prWyHi447BjvN7s6I
+            ezjNDkt/vp//3jKph1f50lwBD8+vRy0jZKTvHoMTeGiYJGSOCxTLs0rE3oslzl+N
+            a7P0Ud4Y7D+ttwm4QKsikZrprSSMOrwMJ03C6zgakZaVUkJ+1nTv6wORpDpX+DI7
+            jeJHv1h5bw7krBtWoA==
+            =0cFX
+            -----END PGP MESSAGE-----
+          fp: 62917C0D840BFB257B005527B6AC02EBC574597F
+    encrypted_regex: ^(POSTGRES_PASSWORD|SECRET_KEY)$
+    version: 3.9.2
