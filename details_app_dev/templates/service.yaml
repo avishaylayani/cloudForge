@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: details-app-dev-dev-service-latest
+  name: details-app-dev-service-latest
   labels:
     app: details-app-dev
     version: latest
