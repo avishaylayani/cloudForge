@@ -12,7 +12,7 @@ spec:
     version: latest
   ports:
   - protocol: TCP
-    port: 8000          # External port for latest version
+    port: 8001          # External port for latest version
     targetPort: 8000  # Internal port in the container
 
 ---
@@ -30,5 +30,5 @@ spec:
     version: latest
   ports:
   - protocol: TCP
-    port: 5432          # External port for latest version
+    port: 5431          # External port for latest version
     targetPort: 5432  # Internal port in the container
