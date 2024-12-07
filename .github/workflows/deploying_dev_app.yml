@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - details_app_dev
-env:
-  DOCKER_USERNAME: ${{ vars.details_app_dev }}
 jobs:
   docker-build:
     name: Build&Push development image
