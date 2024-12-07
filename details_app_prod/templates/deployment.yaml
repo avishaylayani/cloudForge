@@ -37,6 +37,12 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
+    minReadySeconds: 5 ## Setting minimum time for new container to be up, before removing an old container
+    strategy:  ## This is setting the rolling out/back strategy.
+      type: RollingUpdate 
+      rollingUpdate: ## Setting minimum and maximum amount of containers for the updates duration
+        maxUnavailable: 0 ## Maximum amount of less containers than specified in the replica set
+        maxSurge: 1 ## Maximum amount of containers to be added than specified in the replica set
 ---
 apiVersion: apps/v1
 kind: Deployment
