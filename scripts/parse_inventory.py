@@ -7,13 +7,15 @@ try:
     for i in inventory_json:
         inventory_ini+=i['name']+" ansible_host="+i['ip']+"\n"
 
-    inventory_ini+="\n[k8s_master]\n"
 
     inventory_ini+="\n[k8s_nodes]\n"
 
     for i in inventory_json:
         if "node" in i['name']:
             inventory_ini+=i['name']+"\n"
+
+            
+    inventory_ini+="\n[k8s_master]\n"
     for i in inventory_json:
         if "master" in i['name']:
             inventory_ini+=i['name']+"\n"

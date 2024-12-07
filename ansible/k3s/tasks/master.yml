@@ -47,15 +47,10 @@
   - name: Extract token from master
     shell: "sudo cat /var/lib/rancher/k3s/server/token"
     register: master_token
-    run_once: true
     when: "'master' is in inventory_hostname"
-
+    run_once: true
   - name: Set master token as fact for all hosts
     set_fact:
       master_token_shared: "{{ master_token.stdout }}"
-    run_once: true
-    when: "'master' is in inventory_hostname"
-
-  - name: Running install.sh on node
-    shell: curl -L get.k3s.io | K3S_URL="https://{{ master }}:6443" K3S_TOKEN="{{ master_token_shared }}" sh -
-    when: "'node' is in inventory_hostname"
+      when: "'master' is in inventory_hostname"
+      run_once: true

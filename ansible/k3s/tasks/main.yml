@@ -2,6 +2,6 @@
   - name: Master Task
     include_tasks:
       file: master.yml
-  # - name: Node Task
-  #   include_tasks:
-  #     file: node.yml
+  - name: Node Task
+    include_tasks:
+      file: node.yml

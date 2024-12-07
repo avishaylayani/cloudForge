@@ -1,1 +1,5 @@
 ---
+
+  - name: Running install.sh on node
+    shell: curl -L get.k3s.io | K3S_URL="https://{{ master }}:6443" K3S_TOKEN="{{ master_token_shared }}" sh -
+    when: "'node' is in inventory_hostname"
