@@ -14,13 +14,11 @@ jobs:
         run: |
           echo "$GITHUB_REPOSITORY"
           echo "$GITHUB_REPOSITORY_OWNER"
-          echo "$DOCKER_USERNAME"
+          echo "${{ DOCKER_USERNAME }}"
  
       - name: login to docker hub
-        uses: docker/login-action@v2
-        with:
-          username: "$DOCKER_USERNAME"
-          password: "$DOCKER_PASSWORD"
+        run: |
+          cat "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" -p --password-stdin 
       
       # - name: Building the image
       #   run: docker build -t "details_app:test" .
