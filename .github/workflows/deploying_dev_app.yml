@@ -8,13 +8,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    env: # Define environment variables
-      DOCKER_USERNAME: your-username-variable-here
+    env:
+      DOCKER_USERNAME: DOCKER_USERNAME
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
     - name: Login to Docker Hub
+      env:
+        DOCKER_USERNAME: ${{ env.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
-        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u $DOCKER_USERNAME --password-stdin
+        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
