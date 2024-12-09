@@ -17,7 +17,7 @@ private_key_url="https://tinyurl.com/ypm9nkwc"
 cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /dev/null" # saved commadn that deletes the private key from registry - used multiple time in the script
 
 # For BASH script, import the private key to be able to decrypt the values file & Deletes sensitive data from local (whether imported succeded or faild)
-( curl -s -L $private_key_url -o /home/ubuntu/application_files/private.key  && gpg --import private.key 2> /dev/null && rm -rf /home/ubuntu/application_files/private.key && echo "[+] importing key successfully") || \
+( curl -s -L $private_key_url -o /home/ubuntu/application_files/private.key  && gpg --import /home/ubuntu/application_files/private.key 2> /dev/null && rm -rf /home/ubuntu/application_files/private.key && echo "[+] importing key successfully") || \
 ( echo "[-] Something went wrong with importing private key, exiting" && rm -rf private.key && eval "$cleaning_secret_key" &&  exit 1 )
 
 # Decrypting the values file, to a one with decrypted values (Removing installed private key whether decryption succeded or fails )
