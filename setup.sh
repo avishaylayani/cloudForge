@@ -25,8 +25,8 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 ( echo "[-] Something went wrong with decryption process, exiting" && eval "$cleaning_secret_key" && exit 1 )   
 
 # Deploy details_app using Helm - deletes values file 
-( helm install details-app-prod /home/ubuntu/application_files/details_app_prod && rm -rf /home/ubuntu/application_files/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
- helm install details-app-dev /home/ubuntu/application_files/details_app_dev && rm -rf /home/ubuntu/application_files/details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
+( helm --kubeconfig $KUBECONFIG install details-app-prod /home/ubuntu/application_files/details_app_prod && rm -rf /home/ubuntu/application_files/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
+ helm --kubeconfig $KUBECONFIG install details-app-dev /home/ubuntu/application_files/details_app_dev && rm -rf /home/ubuntu/application_files/details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
 ( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf /home/ubuntu/application_files/details_app/values.yaml && exit 1 )
 
 
