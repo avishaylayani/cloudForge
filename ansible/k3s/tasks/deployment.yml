@@ -11,7 +11,6 @@
       mv sops-v3.9.2.linux.amd64 /usr/local/bin/sops && chmod +x /usr/local/bin/sops )
     when: "'master' is in inventory_hostname"
 
-
   - name: Set KUBECONFIG in bashrc
     ansible.builtin.lineinfile:
       path: ~/.bashrc
@@ -19,7 +18,13 @@
       state: present
     become: false
 
-  - name: Create a directory if it does not exist
+  - name: Set KUBECONFIG in bashrc
+    ansible.builtin.lineinfile:
+      path: /etc/environment
+      line: 'KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
+      state: present
+
+  - name: Create a directory for git clone
     ansible.builtin.file:
       path: /home/ubuntu/application_files/
       state: directory
