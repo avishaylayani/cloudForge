@@ -34,7 +34,7 @@
       version: k3s
     become: false
     when: "'master' is in inventory_hostname"
-
+    ignore_errors: true
   - name: Run the deployment script 
     shell: |
       bash /home/ubuntu/application_files/setup.sh
