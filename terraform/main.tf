@@ -31,6 +31,14 @@ module "instance" {
   username               = var.username
   private_key_path       = var.private_key_path
 }
+
+# module "rds" {  ### Still not working
+#   source                 = "./modules/rds"
+#   vpc_security_group_ids = [module.security_group.security_group_id]
+#   db_username            = var.db_username
+#   db_password            = var.db_password
+#   db_subnet_group_name   = module.vpc.rds_subnet_group
+# }
 # module "ebs" {
 #   source      = "./modules/ebs"
 #   instance_id = module.instance.instance_id

@@ -40,6 +40,18 @@ variable "security_group_name" {
   default     = "cicd_security_group"
 }
 
+variable "db_password" {
+  description = "db_password"
+  type        = string
+  default     = "postgres"
+}
+
+variable "db_username" {
+  description = "db_username"
+  type        = string
+  default     = "postgres"
+}
+
 variable "ami_id" {
   description = "AMI ID for the instance - (default is ubuntu)"
   type        = string
@@ -55,7 +67,11 @@ variable "instance_type" {
 variable "instance" {
   description = "Names of the instances to create"
   type        = list(string)
+<<<<<<< HEAD
   default     = ["kubernetes-master", "kubernetes-node-dev", "kubernetes-node-prod"]
+=======
+  default     = ["k3s-master", "k3s-node-dev", "k3s-node-prod"]
+>>>>>>> avishay
 }
 
 variable "s3_buckets" {
@@ -161,4 +177,8 @@ variable "ingress_rules" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> avishay

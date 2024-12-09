@@ -31,11 +31,12 @@ set -o pipefail # Return non-zero status if any part of a pipeline fails
 # # Check the status while Kubernetes starts
 # microk8s status --wait-ready
 
-# # Turn on required services
-# microk8s enable dashboard
-# microk8s enable dns
-# microk8s enable registry
-# microk8s enable istio
+# Turn on required services
+
+microk8s enable dashboard
+microk8s enable dns
+microk8s enable registry
+microk8s enable istio
 
 # # Start using Kubernetes
 
