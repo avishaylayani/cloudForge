@@ -1,10 +1,10 @@
 ---
-  # - name: Master Task
-  #   include_tasks:
-  #     file: master.yml
-  # - name: Node Task
-  #   include_tasks:
-  #     file: node.yml
+#   - name: Master Task
+#     include_tasks:
+#       file: master.yml
+#   - name: Node Task
+#     include_tasks:
+#       file: node.yml
   - name: Details app deployment using Helm into the master node
     include_tasks:
       file: deployment.yml
