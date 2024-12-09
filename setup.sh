@@ -23,29 +23,29 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 # Decrypting the values file, to a one with decrypted values (Removing installed private key whether decryption succeded or fails )
 ( sops -d /home/ubuntu/application_files/values_encrypted_dev.yaml > /home/ubuntu/application_files/details_app_dev/values.yaml && sops -d /home/ubuntu/application_files/values_encrypted_prod.yaml > /home/ubuntu/application_files/details_app_prod/values.yaml && eval "$cleaning_secret_key" && echo "[+] values file decrypted successfully") || \
 ( echo "[-] Something went wrong with decryption process, exiting" && eval "$cleaning_secret_key" && exit 1 )   
-
-# # Deploy details_app using Helm - deletes values file 
-# ( helm install details-app-prod /home/ubuntu/application_files/details_app_prod --kubeconfig $KUBECONFIG && rm -rf /home/ubuntu/application_files/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
-#  helm install details-app-dev /home/ubuntu/application_files/details_app_dev --kubeconfig $KUBECONFIG && rm -rf /home/ubuntu/application_files/details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
-# ( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf /home/ubuntu/application_files/details_app/values.yaml && exit 1 )
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+# Deploy details_app using Helm - deletes values file 
+( helm install details-app-prod /home/ubuntu/application_files/details_app_prod --kubeconfig $KUBECONFIG && rm -rf /home/ubuntu/application_files/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
+ helm install details-app-dev /home/ubuntu/application_files/details_app_dev --kubeconfig $KUBECONFIG && rm -rf /home/ubuntu/application_files/details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
+( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf /home/ubuntu/application_files/details_app/values.yaml && exit 1 )
 
 # Deploy production app
-if helm install details-app-prod /home/ubuntu/application_files/details_app_prod --kubeconfig $KUBECONFIG; then
-    rm -rf /home/ubuntu/application_files/details_app_prod/values.yaml
-    echo "[+] Production Deployment succeeded"
-else
-    echo "[-] Error: Production Deployment failed"
-    exit 1
-fi
+# if helm install details-app-prod /home/ubuntu/application_files/details_app_prod --kubeconfig $KUBECONFIG; then
+#     rm -rf /home/ubuntu/application_files/details_app_prod/values.yaml
+#     echo "[+] Production Deployment succeeded"
+# else
+#     echo "[-] Error: Production Deployment failed"
+#     exit 1
+# fi
 
-# Deploy development app
-if helm install details-app-dev /home/ubuntu/application_files/details_app_dev --kubeconfig $KUBECONFIG; then
-    rm -rf /home/ubuntu/application_files/details_app_dev/values.yaml
-    echo "[+] Dev Deployment succeeded"
-else
-    echo "[-] Error: Dev Deployment failed"
-    exit 1
-fi
+# # Deploy development app
+# if helm install details-app-dev /home/ubuntu/application_files/details_app_dev --kubeconfig $KUBECONFIG; then
+#     rm -rf /home/ubuntu/application_files/details_app_dev/values.yaml
+#     echo "[+] Dev Deployment succeeded"
+# else
+#     echo "[-] Error: Dev Deployment failed"
+#     exit 1
+# fi
 
 
 
