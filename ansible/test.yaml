@@ -1,0 +1,49 @@
+-
+  # Hosts: lists of target hosts that we'll run playbooks on
+  hosts: all
+  become: true
+  # Tasks: list of tasks that will be executed  within play, including pre and post tasks
+  tasks:
+    - name: Creates directory for EBS mount
+      ansible.builtin.file:
+        path: /var/ebs_mount/
+        state: directory
+        owner: root
+        group: root
+        mode: 0777
+
+
+    - name: Format data disk
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/xvdh
+
+
+    - name: mounting EBS volume
+      mount:
+        path: /var/ebs_mount/
+        src: /dev/xvdh
+        fstype: ext4
+        state: mounted
+
+    - name: Example clone of a single branch
+      ansible.builtin.git:
+        repo: https://github.com/orinahum/cloudForge.git
+        dest: /var/ebs_mount/jenkins_docker
+        single_branch: yes
+        version: docker_images
+
+    - name: Restart service Docker
+      ansible.builtin.service:
+        name: containerd.service
+        state: restarted
+
+    - name: Restart service containerd, in all cases
+      ansible.builtin.service:
+        name: docker.service
+        state: restarted
+
+    - name: Docker Compose Up
+      community.docker.docker_compose_v2:
+        project_src: /var/ebs_mount/jenkins_docker/jenkins
+        state: present
