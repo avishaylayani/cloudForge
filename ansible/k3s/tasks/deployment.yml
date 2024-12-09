@@ -1,0 +1,44 @@
+---
+  - name: Install Helm
+    shell: |
+      ( helm -h && echo "Helm is already installed" ) || ( echo "Installing Helm" && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash )
+    when: "'master' is in inventory_hostname"
+
+  - name: Install Sops
+    shell: |
+      ( sops -h && echo "sops is already installed" ) || \
+      ( echo "Installing sops" && curl -LO https://github.com/getsops/sops/releases/download/v3.9.2/sops-v3.9.2.linux.amd64 && \
+      mv sops-v3.9.2.linux.amd64 /usr/local/bin/sops && chmod +x /usr/local/bin/sops )
+    when: "'master' is in inventory_hostname"
+
+  - name: Set k3s env variable
+    shell: |
+      export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+    when: "'master' is in inventory_hostname"
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /home/ubuntu/application_files/
+      state: directory
+      owner: ubuntu
+      group: ubuntu
+      mode: '0755'
+    become: false
+    when: "'master' is in inventory_hostname"
+
+  - name: Clone a repo with separate git directory
+    ansible.builtin.git:
+      repo: 'https://github.com/avishaylayani/CloudForge.git'
+      dest: /home/ubuntu/application_files/
+      single_branch: yes
+      version: k3s
+    become: false
+    when: "'master' is in inventory_hostname"
+    ignore_errors: true
+  - name: Run the deployment script 
+    shell: |
+      bash /home/ubuntu/application_files/setup.sh
+    # ansible.builtin.script: /home/ubuntu/application_files/setup.sh
+    # remote_src: true
+    become: false
+    when: "'master' is in inventory_hostname"
