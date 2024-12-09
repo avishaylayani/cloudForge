@@ -1,9 +1,0 @@
----
-- name: Running k3s on node
-  shell: |
-    curl -sfL https://get.k3s.io | \
-    K3S_KUBECONFIG_MODE="644" \
-    INSTALL_K3S_EXEC="agent" \
-    K3S_TOKEN="{{ master_token_shared }}" \
-    sh -s - --server https://{{ master_ip }}:6443
-  when: "'kubernetes-node' in inventory_hostname"
