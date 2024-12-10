@@ -80,4 +80,3 @@ jobs:
         with:
           subject-name: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
