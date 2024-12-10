@@ -16,7 +16,7 @@ jobs:
 
       - name: Login to Docker Hub
         run: |
-          echo $GITHUB_JOB
+          echo $GITHUB_RUN_ATTEMPT
           # echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ vars.DOCKER_USERNAME }}" --password-stdin && cat testcount.info
 
 
