@@ -70,6 +70,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ vars.DOCKER_USERNAME }}/${{ github.ref_name }}:${{ github.run_number }}
+          subject-name: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:${{ github.run_number }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
