@@ -65,11 +65,11 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ github.run_number }}
+          tags: "${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}"
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:${{ github.run_number }}
+          subject-name: "${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}"
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
