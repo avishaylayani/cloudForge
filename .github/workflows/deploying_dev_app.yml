@@ -28,10 +28,10 @@
 
 name: Publish Docker image
 
-on:
-  release:
-    types: [published]
-
+on: 
+  push:
+    branches:
+      - details_app_dev
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
