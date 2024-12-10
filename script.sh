@@ -22,7 +22,7 @@ echo "[+]  fmt worked fine, starting apply now"
 terraform apply --auto-approve   >> /dev/null
 OUTPUT=$(terraform output -raw instance_ssh_command)
 
-
+echo "" > machines.txt
 # Echo the output and pipe it into read method
 echo "$OUTPUT" | while read -r line; do
     echo $line >> machines.txt

@@ -14,15 +14,15 @@
   - name: Set KUBECONFIG in bashrc
     ansible.builtin.lineinfile:
       path: ~/.bashrc
-      line: 'KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
+      line: 'export KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
       state: present
     become: false
 
-  - name: Set KUBECONFIG in bashrc
-    ansible.builtin.lineinfile:
-      path: /etc/environment
-      line: 'KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
-      state: present
+  # - name: Set KUBECONFIG in bashrc
+  #   ansible.builtin.lineinfile:
+  #     path: /etc/environment
+  #     line: 'KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
+  #     state: present
 
   - name: Create a directory for git clone
     ansible.builtin.file:
