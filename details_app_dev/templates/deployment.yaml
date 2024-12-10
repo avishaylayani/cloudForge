@@ -8,11 +8,20 @@ spec:
     matchLabels:
       app: details-app-dev
       version: latest
+  minReadySeconds: 10 ## Setting minimum time for new container to be up, before removing an old container
+  strategy:  ## This is setting the rolling out/back strategy.
+  type: RollingUpdate 
+  rollingUpdate: ## Setting minimum and maximum amount of containers for the updates duration
+    maxUnavailable: 0 ## Maximum amount of less containers than specified in the replica set
+    maxSurge: 1 ## Maximum amount of containers to be added than specified in the replica set
   template:
     metadata:
       labels:
         app: details-app-dev
         version: latest
+      annotations:
+        date: "+%H:%M:%S %d/%m/%y"
+
     spec:
       containers:
         - name: details-app-dev
@@ -28,6 +37,7 @@ spec:
             - name: DBNAME
               value: {{ .Values.db_pg.DBNAME }}
           image: {{ .Values.images.details_app }}
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000 # This is the internal container port
           resources:
@@ -37,6 +47,15 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            preiodSeconds: 5
+            failureThreshold: 5
+
 ---
 apiVersion: apps/v1
 kind: Deployment
