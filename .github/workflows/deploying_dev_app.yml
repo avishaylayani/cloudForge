@@ -36,6 +36,7 @@ jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    environment: details_app_dev
     permissions:
       packages: write
       contents: read
