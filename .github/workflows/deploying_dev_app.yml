@@ -71,7 +71,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: "${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}"
+          tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}, ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
       - name: Debug Docker digest
         run: |
           echo "Docker Digest: ${{ steps.push.outputs.digest }}"
