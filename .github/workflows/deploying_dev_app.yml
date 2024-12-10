@@ -65,7 +65,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:${{ github.run_number }}
+          tags: ${{ github.run_number }}
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
