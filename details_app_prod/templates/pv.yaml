@@ -14,3 +14,11 @@ spec:
     type: DirectoryOrCreate
   persistentVolumeReclaimPolicy: Retain
   storageClassName: "postgres"
+  nodeAffinity: # Bind PV to a specific node using its hostname
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - k3s-master
