@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /tmp/data/postgres # This is the path on the host where the data will be stored
+    path: /var/ebs_mount/postgres_data/postgres # This is the path on the host where the data will be stored
     type: DirectoryOrCreate
   persistentVolumeReclaimPolicy: Retain
   storageClassName: "postgres"
