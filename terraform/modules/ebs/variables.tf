@@ -1,5 +1,5 @@
-variable "instance_id" {
-  description = "Instance ID"
-  type        = list
+variable "master_id" {
+  description = "Master's Instance ID"
+  type        = string
 }
 

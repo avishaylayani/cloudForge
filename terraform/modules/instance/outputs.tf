@@ -13,11 +13,15 @@ output "instance_ssh_command" {
   ])
 }
 
-output "instances_id" {
-  value = [for id in aws_instance.ec2_machines : id.id]
-  description = "List of all EC2 instance IDs"
-}
+# output "instances_id" {
+#   value = [for id in aws_instance.ec2_machines : id.id]
+#   description = "List of all EC2 instance IDs"
+# }
 
+output "master_id"{
+  description = "Will be used by ebs module, to attach another disk for PV in k3s"
+  value = [for id in aws_instance.ec2_machines : id.id if id.tags["Name"] == "k3s-master"]
+}
 
 # output "instance_id"{
 #   value = aws_instance.ec2_machines.id

@@ -3,7 +3,7 @@ output "instance_ssh_command" {
   value       = module.instance.instance_ssh_command
 }
 
-output "instances_id" {
+output "master_id" {
   description = "Instances IDs"
-  value       = module.instance.instances_id
+  value       = module.instance.master_id
 }
