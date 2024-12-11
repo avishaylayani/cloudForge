@@ -77,7 +77,7 @@ spec:
       volumes:
       - name: postgres-dev-storage
         persistentVolumeClaim:
-          claimName: postgres-pvc
+          claimName: postgres-dev-pvc
       containers:
         - name: postgres-dev
           env:
