@@ -5,6 +5,9 @@
   - name: Node Task
     include_tasks:
       file: node.yml
+  # - name: Attach EBS to all EC2s created for K3S
+  #   include_tasks:
+  #     file: ebs_attachment.yml
   - name: Details app deployment using Helm into the master node
     include_tasks:
       file: deployment.yml

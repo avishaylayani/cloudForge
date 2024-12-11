@@ -1,13 +1,17 @@
-resource "aws_ebs_volume" "cicd" {
+resource "aws_ebs_volume" "postgres_ebs" {
   availability_zone = "us-east-1a"
-  size              = 3
+  size              = 10
+  type = "io1"
+  iops = 200
   tags = {
-    Name = "cicd"
+    Name = "postgres_ebs"
   }
+  multi_attach_enabled = true
 }
 
 resource "aws_volume_attachment" "ebs" {
   device_name = "/dev/sdh"
-  volume_id = aws_ebs_volume.cicd.id
-  instance_id = var.instance_id
+  volume_id = aws_ebs_volume.postgres_ebs.id
+  count = length(var.instance_id)
+  instance_id = element(var.instance_id, count.index)
 }

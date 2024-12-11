@@ -31,9 +31,8 @@ done
 cd ..
 sleep 10
 python3 scripts/parse_inventory.py >> /dev/null
-echo "Script to create inventory worked fine"
+echo "[+]  Script to create inventory worked fine"
 cd ansible
-echo "Create master variable"
 sleep 10
 ansible-playbook main.yml
-echo "Ansible worked fine"
+echo "[+]  Ansible worked fine"

@@ -39,7 +39,7 @@ module "instance" {
 # }
 # module "ebs" {
 #   source      = "./modules/ebs"
-#   instance_id = module.instance.instance_id
+#   instance_id = module.instance.instances_id
 # }
 module "local_file" {
   source   = "./modules/local_file"

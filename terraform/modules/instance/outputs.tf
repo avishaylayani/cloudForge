@@ -13,6 +13,12 @@ output "instance_ssh_command" {
   ])
 }
 
+output "instances_id" {
+  value = [for id in aws_instance.ec2_machines : id.id]
+  description = "List of all EC2 instance IDs"
+}
+
+
 # output "instance_id"{
 #   value = aws_instance.ec2_machines.id
 # }
