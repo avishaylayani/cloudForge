@@ -74,7 +74,7 @@ def get_contacts():
         return jsonify({"error": "Failed to fetch contacts"}), 500
 
 
-@app.get("/healthz")
+@app.get("/healthz", methods=['GET'])
 async def health_check():
     return{"status":"ok"}
 
