@@ -1,0 +1,126 @@
+name: Pipeline for Details_App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  spellcheck:
+    name: Spellcheck Pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Clone/Pull Git Details_App
+        run: |
+          chmod +x scripts/00_git_details_app.sh
+          bash scripts/00_git_details_app.sh
+
+      - name: Install Spellcheck
+        run: |
+          chmod +x scripts/01_install_spellcheck.sh
+          bash scripts/01_install_spellcheck.sh
+
+      - name: Execute Spellcheck
+        run: |
+          chmod +x scripts/01_exec_spellcheck.sh
+          bash scripts/01_exec_spellcheck.sh
+
+  codeshell:
+    name: CodeShell Pipeline
+    runs-on: ubuntu-latest
+    needs: spellcheck
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Clone/Pull Git Details_App
+        run: |
+          chmod +x scripts/00_git_details_app.sh
+          bash scripts/00_git_details_app.sh
+
+      - name: Install Shellcheck
+        run: |
+          chmod +x scripts/02_install_shellcheck.sh
+          bash scripts/02_install_shellcheck.sh
+
+      - name: Execute Shellcheck
+        run: |
+          chmod +x scripts/02_exec_shellcheck.sh
+          bash scripts/02_exec_shellcheck.sh
+
+      - name: Install Codespell
+        run: |
+          chmod +x scripts/02_install_codespell.sh
+          bash scripts/02_install_codespell.sh
+
+      - name: Execute Codespell
+        run: |
+          chmod +x scripts/02_exec_codespell.sh
+          bash scripts/02_exec_codespell.sh
+
+  tests:
+    name: Test Pipeline
+    runs-on: ubuntu-latest
+    needs: codeshell
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Clone/Pull Git Details_App
+        run: |
+          chmod +x scripts/00_git_details_app.sh
+          bash scripts/00_git_details_app.sh
+
+      - name: Install pytest
+        run: |
+          chmod +x scripts/03_install_tests.sh
+          bash scripts/03_install_tests.sh
+
+      - name: Execute pytest
+        run: |
+          chmod +x scripts/03_exec_tests.sh
+          bash scripts/03_exec_tests.sh
+
+  build:
+    name: Build Pipeline
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Clone/Pull Git Details_App
+        run: |
+          chmod +x scripts/00_git_details_app.sh
+          bash scripts/00_git_details_app.sh
+
+      - name: Install Docker and Docker Compose
+        run: |
+          chmod +x scripts/04_install_build.sh
+          bash scripts/04_install_build.sh
+
+      - name: Build Docker Image
+        run: |
+          cd ${{ secrets.APP_DIR }}
+          sudo docker build . -t details_app
+          sudo docker images
+
+      - name: Prepare Docker Login
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          sudo docker logout
+          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      - name: Tag and Push Docker Image
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+          IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
+        run: |
+          sudo docker tag details_app:latest $DOCKER_HUB_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+          sudo docker push $DOCKER_HUB_USERNAME/$IMAGE_NAME:$IMAGE_TAG
