@@ -26,15 +26,15 @@ jobs:
           echo "Docker Username: ${{ vars.DOCKER_USERNAME }}"
           echo "Image Name: ${{ vars.IMAGE_NAME }}"
 
-      - name: Log in to Docker Hub
-        run: |
-          echo "${{ vars.DOCKER_PASSWORD }}" | docker login -u "${{ vars.DOCKER_USERNAME }}" -p --password-stdin
+      # - name: Log in to Docker Hub
+      #   run: |
+      #     echo "${{ vars.DOCKER_PASSWORD }}" | docker login -u "${{ vars.DOCKER_USERNAME }}" -p --password-stdin
         
         
         # uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         # env:
         #     DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
-        #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        #     DOCKER_PASSWORD: ${{ vars.DOCKER_PASSWORD }}
         # with:
         #   username: ${{ env.DOCKER_USERNAME }}
         #   password: ${{ env.DOCKER_PASSWORD }}
