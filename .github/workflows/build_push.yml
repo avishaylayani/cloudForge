@@ -6,16 +6,6 @@ on:
       environment:
         required: true
         type: string
-      docker_username:
-        required: true
-        type: string
-      image_name:
-        required: true
-        type: string
-    secrets:
-      docker_password:
-        required: true
-
 
 jobs:
   push_to_registry:
@@ -26,23 +16,25 @@ jobs:
     steps:
       - name: Debug Environment Variables
         run: |
-          echo "Environment: ${{ inputs.environment }}"
-          echo "Docker Username: ${{ inputs.docker_username }}"
-          echo "Image Name: ${{ inputs.image_name }}"
+          echo "Docker Username: ${{ vars.DOCKER_USERNAME }}"
+          echo "Image Name: ${{ vars.IMAGE_NAME }}"
       - name: Check out the repo
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        env:
+            DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         with:
-          username: ${{ inputs.docker_username }}
-          password: ${{ secrets.docker_password }}
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ inputs.docker_username }}/${{ inputs.image_name }}
+          images: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}
 
       - name: Build and push Docker image
         id: push
@@ -51,10 +43,10 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ inputs.docker_username }}/${{ inputs.image_name }}:2.1.${{ github.run_number }}, ${{ inputs.docker_username }}/${{ inputs.image_name }}:latest
+          tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}, ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ inputs.docker_username }}/${{ inputs.image_name }}:2.1.${{ github.run_number }}
+          subject-name: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}
           subject-digest: ${{ steps.push.outputs.digest }}
