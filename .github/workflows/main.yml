@@ -11,6 +11,8 @@ jobs:
         uses: ./.github/workflows/build_push.yml
         with:
             environment: details_app_dev
+        secrets:
+            environment: details_app_dev
         #     docker_username: ${{ vars.DOCKER_USERNAME }}
         #     image_name: ${{ vars.IMAGE_NAME }}
         # secrets:
