@@ -6,6 +6,11 @@ on:
       environment:
         required: true
         type: string
+    secrets:
+      environment:
+        required: true
+        type: string
+
 
 jobs:
   push_to_registry:
