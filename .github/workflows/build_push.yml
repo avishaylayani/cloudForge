@@ -9,7 +9,6 @@ on:
     secrets:
       environment:
         required: true
-        type: string
 
 
 jobs:
