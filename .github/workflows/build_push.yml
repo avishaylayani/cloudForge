@@ -24,6 +24,11 @@ jobs:
     environment: ${{ inputs.environment }}
 
     steps:
+      - name: Debug Environment Variables
+        run: |
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Docker Username: ${{ inputs.docker_username }}"
+          echo "Image Name: ${{ inputs.image_name }}"
       - name: Check out the repo
         uses: actions/checkout@v4
 
