@@ -1,0 +1,11 @@
+name: Main Workflow
+
+on:
+  push:
+    branches:
+      - details_app_dev
+
+jobs:
+  call_reusable_workflow:
+    name: Call Reusable Workflow
+    uses: ./.github/workflows/reusable.yml
