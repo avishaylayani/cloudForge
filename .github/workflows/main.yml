@@ -12,7 +12,7 @@ jobs:
         with:
             environment: details_app_dev
         secrets:
-            environment: details_app_dev
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         #     docker_username: ${{ vars.DOCKER_USERNAME }}
         #     image_name: ${{ vars.IMAGE_NAME }}
         # secrets:
