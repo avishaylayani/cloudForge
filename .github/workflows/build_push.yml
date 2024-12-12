@@ -6,6 +6,16 @@ on:
       environment:
         required: true
         type: string
+      docker_username:
+        required: true
+        type: string
+      image_name:
+        required: true
+        type: string
+    secrets:
+      docker_password:
+        required: true
+
 
 jobs:
   push_to_registry:
@@ -19,18 +29,15 @@ jobs:
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
-        env:
-            DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
-            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         with:
-          username: ${{ vars.DOCKER_USERNAME }}
+          username: ${{ inputs.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}
+          images: ${{ inputs.DOCKER_USERNAME }}/${{ inputs.IMAGE_NAME }}
 
       - name: Build and push Docker image
         id: push
@@ -39,10 +46,10 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}, ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+          tags: ${{ inputs.DOCKER_USERNAME }}/${{ inputs.IMAGE_NAME }}:2.1.${{ github.run_number }}, ${{ inputs.DOCKER_USERNAME }}/${{ inputs.IMAGE_NAME }}:latest
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}
+          subject-name: ${{ inputs.DOCKER_USERNAME }}/${{ inputs.IMAGE_NAME }}:2.1.${{ github.run_number }}
           subject-digest: ${{ steps.push.outputs.digest }}
