@@ -6,9 +6,10 @@ on:
       environment:
         required: true
         type: string
-    secrets:
       DOCKER_PASSWORD:
         required: true
+        type: string
+        default: "${{ secrets.DOCKER_PASSWORD }}" 
 
 
 jobs:
