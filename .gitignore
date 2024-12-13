@@ -42,7 +42,5 @@ terraform.rc
 
 *.DS_Store*
 
-*.github*
-
 *ansible*
 *terraform*
