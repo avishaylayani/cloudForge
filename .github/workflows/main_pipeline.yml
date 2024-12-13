@@ -1,4 +1,4 @@
-name: Pipeline for Details_App
+name: Pipeline for Details_App_prod
 
 on:
   push:
