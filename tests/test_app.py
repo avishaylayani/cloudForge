@@ -13,7 +13,7 @@ def in_memory_db():
         db.create_all()  # Create tables for testing
     yield
     with app.app_context():
-        db.drop_all() 
+        db.drop_all()
 
 def create_contact(name="Test Name", email="test@example.com"):
     'function to create a contact for testing'
