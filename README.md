@@ -17,6 +17,5 @@ Applications that can store your personal details and list all the written users
 - Run docker compose up -d
 - Access the API on localhost port 8000
 
-
 ### Notes
 - All data is stored in "Contacts" table in postgresql
