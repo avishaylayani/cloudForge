@@ -26,6 +26,13 @@ try:
     with open('ansible/inventory.ini', "w") as file:
         file.write(inventory_ini)
 
+
+## Creating file with only the master's IP
+
+    with open('ansible/master_ip', "w") as file:
+        file.write(master_ip)
+
+
 except FileNotFoundError:
     print("Error: The file 'terraform/inventory.json' was not found. Please ensure the file exists and the path is correct.")
 
