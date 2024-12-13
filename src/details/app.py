@@ -73,7 +73,6 @@ def get_contacts():
         logger.error(f'Error fetching contacts: {e}', exc_info=True)
         return jsonify({"error": "Failed to fetch contacts"}), 500
 
-
 @app.get('/healthz', methods=['GET'])
 async def health_check():
     return{"status":"ok"}
