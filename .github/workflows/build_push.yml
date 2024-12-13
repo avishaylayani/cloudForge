@@ -6,6 +6,9 @@ on:
       environment:
         required: true
         type: string
+      image_name:
+        required: true
+        type: string
 
 jobs:
   push_to_registry:
@@ -14,7 +17,7 @@ jobs:
     environment: ${{ inputs.environment }}
 
     steps:
-      - name: Check out the repo
+      - name: Check out the repository
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
@@ -27,7 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}
+          images: ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}
 
       - name: Build and push Docker image
         id: push
@@ -37,11 +40,11 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }} 
-            ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+            ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:2.1.${{ github.run_number }} 
+            ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:latest
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ secrets.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}
+          subject-name: ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:2.1.${{ github.run_number }}
           subject-digest: ${{ steps.push.outputs.digest }}
