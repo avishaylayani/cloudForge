@@ -13,20 +13,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Clone/Pull Git Details_App
-        run: |
-          chmod +x scripts/00_git_details_app.sh
-          bash scripts/00_git_details_app.sh
-
       - name: Install Spellcheck
         run: |
-          chmod +x scripts/01_install_spellcheck.sh
-          bash scripts/01_install_spellcheck.sh
+          chmod +x ./pipeline_scripts/01_install_spellcheck.sh
+          bash ./pipeline_scripts/01_install_spellcheck.sh
 
       - name: Execute Spellcheck
         run: |
-          chmod +x scripts/01_exec_spellcheck.sh
-          bash scripts/01_exec_spellcheck.sh
+          chmod +x ./pipeline_scripts/01_exec_spellcheck.sh
+          bash ./pipeline_scripts/01_exec_spellcheck.sh
 
   codeshell:
     name: CodeShell Pipeline
@@ -36,30 +31,25 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Clone/Pull Git Details_App
-        run: |
-          chmod +x scripts/00_git_details_app.sh
-          bash scripts/00_git_details_app.sh
-
       - name: Install Shellcheck
         run: |
-          chmod +x scripts/02_install_shellcheck.sh
-          bash scripts/02_install_shellcheck.sh
+          chmod +x ./pipeline_scripts/02_install_shellcheck.sh
+          bash ./pipeline_scripts/02_install_shellcheck.sh
 
       - name: Execute Shellcheck
         run: |
-          chmod +x scripts/02_exec_shellcheck.sh
-          bash scripts/02_exec_shellcheck.sh
+          chmod +x ./pipeline_scripts/02_exec_shellcheck.sh
+          bash ./pipeline_scripts/02_exec_shellcheck.sh
 
       - name: Install Codespell
         run: |
-          chmod +x scripts/02_install_codespell.sh
-          bash scripts/02_install_codespell.sh
+          chmod +x ./pipeline_scripts/02_install_codespell.sh
+          bash ./pipeline_scripts/02_install_codespell.sh
 
       - name: Execute Codespell
         run: |
-          chmod +x scripts/02_exec_codespell.sh
-          bash scripts/02_exec_codespell.sh
+          chmod +x ./pipeline_scripts/02_exec_codespell.sh
+          bash ./pipeline_scripts/02_exec_codespell.sh
 
   tests:
     name: Test Pipeline
@@ -69,20 +59,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Clone/Pull Git Details_App
-        run: |
-          chmod +x scripts/00_git_details_app.sh
-          bash scripts/00_git_details_app.sh
-
       - name: Install pytest
         run: |
-          chmod +x scripts/03_install_tests.sh
-          bash scripts/03_install_tests.sh
+          chmod +x ./pipeline_scripts/03_install_tests.sh
+          bash ./pipeline_scripts/03_install_tests.sh
 
       - name: Execute pytest
         run: |
-          chmod +x scripts/03_exec_tests.sh
-          bash scripts/03_exec_tests.sh
+          chmod +x ./pipeline_scripts/03_exec_tests.sh
+          bash ./pipeline_scripts/03_exec_tests.sh
 
   build:
     name: Build Pipeline
