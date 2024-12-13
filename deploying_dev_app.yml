@@ -46,12 +46,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Debug image name and username
-        run: |
-          echo "Image name: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:${{ github.run_number }}"
-          echo "Username: ${{ vars.DOCKER_USERNAME }}"
-          echo "Image Name: ${{ vars.IMAGE_NAME }}"
-
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
@@ -72,9 +66,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}, ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
-      - name: Debug Docker digest
-        run: |
-          echo "Docker Digest: ${{ steps.push.outputs.digest }}"
+     
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:

@@ -3,7 +3,7 @@ name: Pipeline for Details_App
 on:
   push:
     branches:
-      - main
+      - details_app_dev
 
 jobs:
   spellcheck:
@@ -92,35 +92,42 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Clone/Pull Git Details_App
-        run: |
-          chmod +x scripts/00_git_details_app.sh
-          bash scripts/00_git_details_app.sh
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    environment: details_app_dev
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
 
-      - name: Install Docker and Docker Compose
-        run: |
-          chmod +x scripts/04_install_build.sh
-          bash scripts/04_install_build.sh
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker Image
-        run: |
-          cd ${{ secrets.APP_DIR }}
-          sudo docker build . -t details_app
-          sudo docker images
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}
 
-      - name: Prepare Docker Login
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: |
-          sudo docker logout
-          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-
-      - name: Tag and Push Docker Image
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-          IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
-        run: |
-          sudo docker tag details_app:latest $DOCKER_HUB_USERNAME/$IMAGE_NAME:$IMAGE_TAG
-          sudo docker push $DOCKER_HUB_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}, ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+     
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:2.1.${{ github.run_number }}
+          subject-digest: ${{ steps.push.outputs.digest }}
