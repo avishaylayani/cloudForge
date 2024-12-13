@@ -1,0 +1,51 @@
+---
+  - name: Install Helm
+    shell: |
+      ( helm -h && echo "Helm is already installed" ) || ( echo "Installing Helm" && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash )
+    when: "'master' is in inventory_hostname"
+
+  - name: Install Sops
+    shell: |
+      ( sops -h && echo "sops is already installed" ) || \
+      ( echo "Installing sops" && curl -LO https://github.com/getsops/sops/releases/download/v3.9.2/sops-v3.9.2.linux.amd64 && \
+      mv sops-v3.9.2.linux.amd64 /usr/local/bin/sops && chmod +x /usr/local/bin/sops )
+    when: "'master' is in inventory_hostname"
+
+  - name: Set KUBECONFIG in bashrc
+    ansible.builtin.lineinfile:
+      path: ~/.bashrc
+      line: 'export KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
+      state: present
+    become: false
+
+  # - name: Set KUBECONFIG in bashrc
+  #   ansible.builtin.lineinfile:
+  #     path: /etc/environment
+  #     line: 'KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
+  #     state: present
+
+  - name: Create a directory for git clone
+    ansible.builtin.file:
+      path: /home/ubuntu/application_files/
+      state: directory
+      owner: ubuntu
+      group: ubuntu
+      mode: '0755'
+    become: false
+    when: "'master' is in inventory_hostname"
+
+  - name: Clone a repo with separate git directory
+    ansible.builtin.git:
+      repo: 'https://github.com/avishaylayani/CloudForge.git'
+      dest: /home/ubuntu/application_files/
+      single_branch: yes
+      version: k3s
+      force: yes
+    become: false
+    when: "'master' is in inventory_hostname"
+
+  - name: Run the deployment script 
+    shell: |
+      bash /home/ubuntu/application_files/setup.sh
+    become: false
+    when: "'master' is in inventory_hostname"
