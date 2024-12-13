@@ -21,6 +21,7 @@ jobs:
         run: |
           echo "Docker Username: ${{ vars.DOCKER_USERNAME }}"
           echo "Image Name: ${{ vars.IMAGE_NAME }}"
+          echo "Secret: ${{ secrets.DOCKER_PASSWORD }}"
 
       # - name: Log in to Docker Hub
       #   run: |
