@@ -1,6 +1,6 @@
 # Local .terraform directories
 **.terraform*
-
+**.values.yaml
 ## Files generated during scripts: 
 *inventory.ini
 *inventory.json

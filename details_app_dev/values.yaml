@@ -2,7 +2,7 @@ rep_set:
     details_app: 2
     postgres: 1
 images:
-    details_app: alayani/details_app:test
+    details_app: alayani/details_app:latest
     postgres: postgres:latest
 db_pg:
     POSTGRES_USER: pgadmin
