@@ -9,7 +9,7 @@ on:
       image_name:
         required: true
         type: string
-
+# 1
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
