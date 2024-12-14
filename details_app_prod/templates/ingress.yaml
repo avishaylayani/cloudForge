@@ -6,9 +6,9 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   tls:
-  - hosts:
-    - details-app.local
-    secretName: details-app-tls
+    - hosts:
+      - details-app.local
+      secretName: details-app-tls
   rules:
   - host: details-app.local
     http:
