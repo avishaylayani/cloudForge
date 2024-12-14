@@ -39,6 +39,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+*values.yaml
+
 *.DS_Store
 ansible
 terraform
