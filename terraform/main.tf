@@ -1,3 +1,9 @@
+module "s3_bucket" {
+  source     = "./modules/s3_bucket"
+  s3_bucket = var.s3_bucket
+
+}
+
 module "key_pair" {
   source          = "./modules/key_pair"
   key_name        = var.key_name
@@ -49,8 +55,3 @@ module "local_file" {
   filename = var.inventory_filename
 }
 
-# module "s3_buckets" {
-#   source     = "./modules/s3_buckets"
-#   s3_buckets = var.s3_buckets
-
-# }
