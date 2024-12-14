@@ -15,4 +15,4 @@ spec:
           service:
             name: details-app-dev-service
             port:
-              number: 80
+              number: 800
