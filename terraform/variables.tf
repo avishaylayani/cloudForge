@@ -58,10 +58,10 @@ variable "instance" {
   default     = ["k3s-master", "k3s-node-dev", "k3s-node-prod"]
 }
 
-variable "s3_buckets" {
+variable "s3_bucket" {
   description = "Names of the buckets to create"
-  type        = list(string)
-  default     = ["cicd-lajsgfhjkla", "tf-state-lajsgfhjkla"]
+  type        = string
+  default     = "main-making-sure-its-unique"
 }
 
 variable "availability_zone" {
