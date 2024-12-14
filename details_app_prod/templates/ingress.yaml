@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
     - hosts:
-      - k3s-master
+      - 54.89.214.173
       secretName: details-app-tls
   rules:
-  - host: k3s-master
+  - host: 54.89.214.173
     http:
       paths:
       - path: /
