@@ -8,7 +8,7 @@ spec:
   tls:
   - hosts:
     - details-app.local
-    secretName: details-app-tls-secret
+    secretName: details-app-tls
   rules:
   - host: details-app.local
     http:
