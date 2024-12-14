@@ -14,8 +14,6 @@ spec:
   - protocol: TCP
     port: 8000          # External port for latest version
     targetPort: 8000  # Internal port in the container
-    nodePort: 443
-  type: NodePort
 ---
 apiVersion: v1
 kind: Service
