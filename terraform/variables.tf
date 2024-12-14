@@ -1,3 +1,9 @@
+variable "aws_region" {
+  description = "The AWS region to deploy resources in"
+  type        = string
+  default     = "us-east-1"
+}
+
 variable "key_name" {
   description = "The name of the key pair"
   type        = string
@@ -56,12 +62,6 @@ variable "instance" {
   description = "Names of the instances to create"
   type        = list(string)
   default     = ["k3s-master", "k3s-node-dev", "k3s-node-prod"]
-}
-
-variable "s3_bucket" {
-  description = "Names of the buckets to create"
-  type        = string
-  default     = "main-making-sure-its-unique"
 }
 
 variable "availability_zone" {

@@ -9,17 +9,19 @@ set -o errexit  # Exit on any command failing
 set -o pipefail # Return non-zero status if any part of a pipeline fails
 #########################################################################
 
+cd terraform_bucket
+terraform init >> /dev/null
+echo "[+]  Init worked fine"
+terraform fmt
+echo "[+]  fmt worked fine, starting apply now"
 
-cd terraform
+# aws s3api delete-objects --bucket $BUCKET_NAME --delete $(aws s3api list-object-versions --bucket $BUCKET_NAME --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}' | jq -c '{Objects: .Objects, Quiet: false}')
+# terraform destroy --auto-approve
+# echo "[+]  destroyed any resources, if existed"
 
-echo "To create the environemnt, enter Y/y | To delete an already deployed environment, enter n/N"
-read -n1 p
-case "$p" in
-    y/Y) echo "Running deployment script";;
-    n/N) mv local local.tf && mv s3_backend.tf s3_backend && terraform init -migrate-state -force-copy && terraform destroy --auto-approve && exit 0;;
-    *) echo "This answer is not valid. Choose a valid answer" && exit 1;;
-esac
+terraform apply --auto-approve
 
+cd ../terraform
 
 terraform init >> /dev/null
 echo "[+]  Init worked fine"
@@ -30,12 +32,6 @@ terraform fmt
 echo "[+]  fmt worked fine, starting apply now"
 
 terraform apply --auto-approve
-
-## To save tfstate file in S3 bucket, we first must have the bucket configured. 
-## So we are applying the environment in local backend, and afteward, migrating it to the s3 bucket by changing the backend configuration
-mv s3_backend s3_backend.tf
-mv local.tf local
-terraform init -migrate-state -force-copy
 
 OUTPUT=$(terraform output -raw instance_ssh_command)
 

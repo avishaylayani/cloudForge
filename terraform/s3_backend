@@ -1,9 +1,0 @@
-terraform {
-  backend "s3" {
-    bucket  = "main-making-sure-its-unique"
-    key     = "terraform.tfstate"
-    region  = "us-east-1"
-    profile = "default" ## Needs to match the AWS profile configured in ~/.aws/config
-    # ecnrypt = true ## Can be encrypted in proper environment
-  }
-}

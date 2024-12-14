@@ -19,13 +19,13 @@
     when: "('master' is in inventory_hostname) and k3s_exists.failed"
     
   - name: Apply Calico CNI Plugin
-    become: yes
+    become: true
     shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
     register: result
     retries: 3
     delay: 10
     until: result.rc == 0
-    ignore_errors: yes
+    ignore_errors: true
     when: "'master' is in inventory_hostname"
 
   - name: Validate Calico Deployment Success
@@ -34,7 +34,7 @@
     retries: 5
     delay: 15
     until: "'Running' in calico_pods.stdout"
-    become: yes
+    become: true
     when: "'master' is in inventory_hostname"
 
   - name: Restart service k3s, in all cases, also issue daemon-reload to pick up config changes

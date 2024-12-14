@@ -38,6 +38,8 @@ override.tf.json
 
 # Ignore CLI configuration files
 .terraformrc
+*bucketname.txt*
+*backend.hcl*
 terraform.rc
 
 *.DS_Store

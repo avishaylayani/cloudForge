@@ -1,9 +1,3 @@
-module "s3_bucket" {
-  source     = "./modules/s3_bucket"
-  s3_bucket = var.s3_bucket
-
-}
-
 module "key_pair" {
   source          = "./modules/key_pair"
   key_name        = var.key_name
@@ -36,14 +30,6 @@ module "instance" {
   user_data_script       = var.k8s_install_path
 }
 
-# module "rds" {  ### Still not working
-#   source                 = "./modules/rds"
-#   vpc_security_group_ids = [module.security_group.security_group_id]
-#   db_username            = var.db_username
-#   db_password            = var.db_password
-#   db_subnet_group_name   = module.vpc.rds_subnet_group
-# }
-
 module "ebs" {
   source    = "./modules/ebs"
   master_id = module.instance.master_id[0]
@@ -54,4 +40,3 @@ module "local_file" {
   content  = module.instance.instance_inventory
   filename = var.inventory_filename
 }
-

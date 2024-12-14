@@ -2,9 +2,12 @@ provider "aws" {
   region = var.aws_region
 }
 
-variable "aws_region" {
-  description = "The AWS region to deploy resources in"
-  type        = string
-  default     = "us-east-1"
+terraform {
+  backend "s3" {
+    bucket  = "main-cloudforge-bucket"
+    key     = "terraform.tfstate"
+    region  = "us-east-1"
+    profile = "default" ## Needs to match the AWS profile configured in ~/.aws/config
+    # ecnrypt = true ## Can be encrypted in proper environment
+  }
 }
-
