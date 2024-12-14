@@ -19,4 +19,4 @@ spec:
           service:
             name: details-app-service
             port:
-              number: 8000
+              number: 443
