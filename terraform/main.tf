@@ -37,10 +37,12 @@ module "instance" {
 #   db_password            = var.db_password
 #   db_subnet_group_name   = module.vpc.rds_subnet_group
 # }
-# module "ebs" {
-#   source      = "./modules/ebs"
-#   instance_id = module.instance.instance_id
-# }
+
+module "ebs" {
+  source    = "./modules/ebs"
+  master_id = module.instance.master_id[0]
+}
+
 module "local_file" {
   source   = "./modules/local_file"
   content  = module.instance.instance_inventory

@@ -13,27 +13,26 @@ cd terraform
 terraform init >> /dev/null
 echo "[+]  Init worked fine"
 chmod 400 cloudforge.pem
-terraform destroy --auto-approve >> /dev/null
+terraform destroy --auto-approve
 echo "[+]  destroyed any resources, if existed"
-terraform fmt >> /dev/null
+terraform fmt
 echo "[+]  fmt worked fine, starting apply now"
 
 
-terraform apply --auto-approve   >> /dev/null
+terraform apply --auto-approve
 OUTPUT=$(terraform output -raw instance_ssh_command)
 
-
+echo "" > machines.txt
 # Echo the output and pipe it into read method
 echo "$OUTPUT" | while read -r line; do
-    echo $line >> machines.txt
+    echo $line
 done
 
 cd ..
 sleep 10
 python3 scripts/parse_inventory.py >> /dev/null
-echo "Script to create inventory worked fine"
+echo "[+]  Script to create inventory worked fine"
 cd ansible
-echo "Create master variable"
 sleep 10
 ansible-playbook main.yml
-echo "Ansible worked fine"
+echo "[+]  Ansible worked fine"

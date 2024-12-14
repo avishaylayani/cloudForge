@@ -1,13 +1,14 @@
-resource "aws_ebs_volume" "cicd" {
+resource "aws_ebs_volume" "postgres_ebs" {
   availability_zone = "us-east-1a"
-  size              = 3
+  size              = 10
+  type = "gp3"
   tags = {
-    Name = "cicd"
+    Name = "postgres_ebs"
   }
 }
 
 resource "aws_volume_attachment" "ebs" {
-  device_name = "/dev/sdh"
-  volume_id = aws_ebs_volume.cicd.id
-  instance_id = var.instance_id
+  device_name = "/dev/xvdh"
+  volume_id = aws_ebs_volume.postgres_ebs.id
+  instance_id = var.master_id
 }

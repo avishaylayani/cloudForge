@@ -11,12 +11,20 @@
       mv sops-v3.9.2.linux.amd64 /usr/local/bin/sops && chmod +x /usr/local/bin/sops )
     when: "'master' is in inventory_hostname"
 
-  - name: Set k3s env variable
-    shell: |
-      export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-    when: "'master' is in inventory_hostname"
+  - name: Set KUBECONFIG in bashrc
+    ansible.builtin.lineinfile:
+      path: ~/.bashrc
+      line: 'export KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
+      state: present
+    become: false
 
-  - name: Create a directory if it does not exist
+  # - name: Set KUBECONFIG in bashrc
+  #   ansible.builtin.lineinfile:
+  #     path: /etc/environment
+  #     line: 'KUBECONFIG=/etc/rancher/k3s/k3s.yaml'
+  #     state: present
+
+  - name: Create a directory for git clone
     ansible.builtin.file:
       path: /home/ubuntu/application_files/
       state: directory
@@ -32,13 +40,12 @@
       dest: /home/ubuntu/application_files/
       single_branch: yes
       version: k3s
+      force: yes
     become: false
     when: "'master' is in inventory_hostname"
-    ignore_errors: true
+
   - name: Run the deployment script 
     shell: |
       bash /home/ubuntu/application_files/setup.sh
-    # ansible.builtin.script: /home/ubuntu/application_files/setup.sh
-    # remote_src: true
     become: false
     when: "'master' is in inventory_hostname"

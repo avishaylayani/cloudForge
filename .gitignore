@@ -2,9 +2,9 @@
 **.terraform*
 
 ## Files generated during scripts: 
-*inventory.ini
-*inventory.json
-
+*inventory.ini*
+*inventory.json*
+*machines.txt*
 # .tfstate files
 *.tfstate
 *.tfstate.*
@@ -31,7 +31,7 @@ override.tf.json
 .terraform.tfstate.lock.info
 
 # Include override files you do wish to add to version control using negated pattern
-# !example_override.tf
+# example_override.tf
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
@@ -40,4 +40,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-.DS_Store
+*.DS_Store
+
+.vscode/
+details_app/values.yaml
+notes.txt

@@ -1,0 +1,21 @@
+---
+    - name: Creates directory for EBS mount
+      ansible.builtin.file:
+        path: /var/ebs_mount/
+        state: directory
+        owner: root
+        group: root
+        mode: 0777
+      when: "'master' is in inventory_hostname"
+    - name: Format data disk
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/xvdh
+      when: "'master' is in inventory_hostname"
+    - name: mounting EBS volume
+      mount:
+        path: /var/ebs_mount/
+        src: /dev/xvdh
+        fstype: ext4
+        state: mounted
+      when: "'master' is in inventory_hostname"
