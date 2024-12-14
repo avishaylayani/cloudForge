@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
     - hosts:
-      - details-app.local
+      - localhost
       secretName: details-app-tls
   rules:
-  - host: details-app.local
+  - host: localhost
     http:
       paths:
       - path: /
