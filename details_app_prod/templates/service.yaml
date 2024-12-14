@@ -12,9 +12,10 @@ spec:
     version: latest
   ports:
   - protocol: TCP
-    port: 443          # External port for latest version
+    port: 8000          # External port for latest version
     targetPort: 8000  # Internal port in the container
-
+    nodePort: 443
+  type: NodePort
 ---
 apiVersion: v1
 kind: Service
