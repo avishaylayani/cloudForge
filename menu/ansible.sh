@@ -12,8 +12,12 @@ set -o pipefail # Return non-zero status if any part of a pipeline fails
 ansible_operations() {
     echo -e "$(colorize 'Running Ansible operations...' 'magenta')" && sleep 0.6
     
+    # add permissions to files
+    chmod +x scripts/parse_inventory.py
+    chmod 600 terraform/main_structure/cloudforge.pem 
+
     # Parse inventory from terraform ec2
-    python3 scripts/parsh_inventory.py
+    python3 scripts/parse_inventory.py
 
     # Run the Ansible playbook
     cd ansible || exit
