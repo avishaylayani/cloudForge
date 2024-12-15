@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: details-app-service
+  namespace: prod
   labels:
     app: details-app
     version: latest
@@ -12,8 +13,9 @@ spec:
     version: latest
   ports:
   - protocol: TCP
-    port: 443          # External port for latest version
-    targetPort: 8000  # Internal port in the container
+    port: 8000          # External port for latest version
+    targetPort: 8000
+  type: ClusterIP  # Internal port in the container
 ---
 apiVersion: v1
 kind: Service

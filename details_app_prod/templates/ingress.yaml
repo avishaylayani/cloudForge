@@ -2,15 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: details-app-ingress
+  namespace: prod
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"spec:
 spec:
-  # tls:
-  #   - hosts:
-  #     - details-app-prod.local
-  #     secretName: details-app-tls
   rules:
-  - host: details-app-prod.local
+  - host: "app.*"
     http:
       paths:
       - path: /
@@ -20,3 +19,7 @@ spec:
             name: details-app-service
             port:
               number: 8000
+  tls:
+  - hosts:
+    - app.10.0.0.1
+    secretName: prod-tls

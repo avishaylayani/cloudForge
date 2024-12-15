@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: details-app
+  namespace: prod
 spec:
   replicas: {{ .Values.rep_set.details_app }}
   selector:
