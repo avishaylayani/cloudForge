@@ -1,69 +1,62 @@
 ![k3s_details_app Banner](assets/k3s_details_app.png)
 
-# K3S Details App
+| **[INSTALLATION](INSTALLATION.md)** | **[CONTRIBUTORS](CONTRIBUTORS.md)** | **[MENU GUIDE](menu/MENU.md)** |
 
-## Overview
-The K3S Details App is a Kubernetes-based application designed to be deployed using Helm. It automates deployment with an accompanying script to ensure a smooth and repeatable setup. This repository provides a set of Kubernetes YAML files, Helm charts, and an automated setup script to make the deployment process easier.
+# CloudForge Project
+
+CloudForge is an infrastructure automation project designed to simplify cloud provisioning, configuration management, and Kubernetes cluster management. The project leverages tools like **Terraform**, **Ansible**, and **K3S** for infrastructure-as-code and deployment automation.
 
 ## Features
-- Helm-based Kubernetes deployment
-- Secure handling of sensitive configurations using GPG and SOPS
-- Automation with `setup.sh` script
-- Configuration management using Kubernetes manifests
 
-## Prerequisites
-- Kubernetes cluster (local or cloud-based)
-- Helm installed on your local system
-- GPG for handling encrypted secrets
-- `sops` installed for encryption management
+- Automated provisioning of AWS infrastructure using Terraform.
+- Deployment and configuration management using Ansible.
+- Kubernetes cluster management with K3S, including rollout and rollback operations.
+- Modular menu-driven CLI for simplified user interactions.
 
-## Usage
-The `setup.sh` script will manage encryption and deployment. It performs the following:
-1. Downloads and imports a private key for decryption.
-2. Decrypts the `values_encrypted.yaml` file.
-3. Deploys the Details App using Helm.
+---
 
 ## Dependencies
-To successfully run the **K3S Details Application**, the following dependencies are required:
 
-**DetailsApp** (`details_app_old`) [GIT repository](https://github.com/lavishay-technion/details_app_old/tree/details_app_with_helm), [Docker Hub](https://hub.docker.com/layers/alayani/details_app/test/images/sha256-b023e92f9c9369a8f12c06d9acb1a6104ac000f82961fe8987f064c58567609e?context=repo).
+The following dependencies are required to run this project:
 
-### Required Tools
+- **Bash** (Version 4.0+)
+- **Terraform**
+- **Ansible**
+- **AWS CLI**
+- **Python3**
+- **jq** (For JSON parsing in shell scripts)
 
-- **GPG** (`gpg`): Used for encryption to securely manage sensitive information.
-- **SOPS** (`sops`): A tool to work with encrypted files, commonly used as a Helm secret plugin.
-- **Helm** (`helm`): A package manager for Kubernetes that helps in deploying applications.
-- **Kubernetes** (`k8s`) or **K3S** (`k3s`): Kubernetes or its lightweight version, K3S, to orchestrate containerized applications.
+### Platform-Specific Tools:
+- **Linux**: `xdg-open` for opening URLs.
+- **macOS**: `open` command for opening URLs.
+- **Windows**: WSL or native compatibility for running Bash scripts.
 
+---
 
 ## Project Structure
-- **[setup.sh](setup.sh)**: Script for deploying the K3S Details App, including encryption management.
-- **[values_encrypted.yaml](values_encrypted.yaml)**: Contains encrypted configuration values used by Helm.
-- **[deployment.yaml](details_app/templates/deployment.yaml), [service.yaml](details_app/templates/service.yaml), [ingress.yaml](details_app/templates/ingress.yaml), [pv.yaml](details_app/templates/pv.yaml), [pvc.yaml](details_app/templates/pvc.yaml)**: Kubernetes manifests for deploying resources.
-- **[Chart.yaml](details_app/Chart.yaml)**: Helm chart configuration file.
-- **[TASK.md](TASK.md)**: Project-related tasks and requirements.
 
-```bash
-📁 K3S_DETAILS_APP
-├──📁 assets
-|   ├──🏞️ contribute.png
-|   ├──🏞️ installation.png
-|   └──🏞️ k3s_detaild_app.png
-├──📁 details_app
-│   └──📁 templates
-│   |    ├──🧾 deployment.yaml
-│   |    ├──🧾 ingress.yaml
-│   |    ├──🧾 pv.yaml
-│   |    ├──🧾 pvc.yaml
-│   |    ├──🔐 secrets.yaml
-│   |    └──🧾 service.yaml
-|   ├──❌ .helmignore
-│   └──📊 Chart.yaml
-├──❌ .gitignore
-├──👥 CONTRIBUTERS.md
-├──🛠️ INSTALLATION.md
-├──📖 README.md
-├──💾 setup.sh
-├──📋 TASK.md
-└──🈵 values_encrypted.yaml
+```plaintext
+CloudForge/
+├── menu/                   # Menu scripts for modular operations
+│   ├── banner.sh           # Displays project banner
+│   ├── colorize.sh         # Adds colorized output for menus
+│   ├── dependencies.sh     # Checks and installs required dependencies
+│   ├── terraform.sh        # Terraform operations (init, apply, destroy)
+│   ├── ansible.sh          # Ansible operations (provisioning and configuration)
+│   ├── k3s.sh              # K3S operations (rollout and rollback)
+│   ├── menu.md             # Guide for menu navigation and usage
+│   └── step_by_step.sh     # Guided step-by-step operations
+├── terraform/              # Main Terraform configurations
+│   ├── main.tf             # Core infrastructure setup
+│   ├── variables.tf        # Input variables
+│   └── outputs.tf          # Outputs for dependencies like S3 bucket
+├── terraform_bucket/       # Separate module for S3 backend bucket
+├── ansible/                # Ansible playbooks and configuration files
+│   ├── master_ip           # File to store the K3S master IP
+│   └── main.yml            # Ansible playbook for configuration
+├── scripts/                # Supporting Python scripts
+│   └── parsh_inventory.py  # Script to parse inventory files for Ansible
+├── main_menu.sh            # Main entry point script for the project
+├── README.md               # Project overview and documentation
+└── installation.md         # Detailed installation instructions
 ```

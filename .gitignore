@@ -5,6 +5,7 @@
 *inventory.ini*
 *inventory.json*
 *machines.txt*
+*master_ip*
 # .tfstate files
 *.tfstate
 *.tfstate.*
@@ -44,6 +45,7 @@ terraform.rc
 
 *.DS_Store
 
-.vscode/
-details_app/values.yaml
-notes.txt
+*.vscode*
+*details_app/values.yaml*
+*notes.txt*
+*plan_output.txt*

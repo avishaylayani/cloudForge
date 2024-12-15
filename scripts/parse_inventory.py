@@ -1,7 +1,7 @@
 import json
 master_ip=None
 try:
-    with open('terraform/inventory.json') as file:
+    with open('terraform/main_structure/inventory.json') as file:
         inventory_json = json.load(file)
     inventory_ini="[all]\n"
     for i in inventory_json:

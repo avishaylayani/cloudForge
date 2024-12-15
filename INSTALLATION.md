@@ -1,60 +1,121 @@
-![INSTALLATION Banner](assets/installation.png)
+![k3s_details_app Banner](assets/k3s_details_app.png)
 
-# Installation Guide
+| **[README](README.md)** | **[CONTRIBUTORS](CONTRIBUTORS.md)** | **[MENU GUIDE](menu/MENU.md)** |
 
-### Step 1: Clone the Repository
-Clone the repository to your local machine using Git:
-```sh
-$ git clone https://github.com/lavishay-technion/K3S_details_app.git
-$ cd K3S_details_app
+
+# CloudForge Installation Guide
+
+This guide provides detailed instructions for installing and configuring the **CloudForge** project on your system.
+
+## Prerequisites
+
+The following tools are required to run **CloudForge**:
+
+- **Bash** (Version 4.0+)
+- **Terraform**
+- **Ansible**
+- **AWS CLI**
+- **Python3**
+- **jq**
+
+### Platform-Specific Notes:
+- **macOS**: Requires Homebrew for dependency installation.
+- **Linux**: Requires `apt` or equivalent package manager.
+- **Windows**: Requires Windows Subsystem for Linux (WSL) with Ubuntu.
+
+
+## Installation Steps
+
+### 1. Clone the Repository
+
+Clone the **CloudForge** repository from GitHub:
+```bash
+git clone https://github.com/your-repo/cloudforge.git
+cd cloudforge
 ```
 
-### Step 2: Install Prerequisites
-Ensure you have `Kubernetes`, `Helm`, `GPG`, and `sops` installed.
+### 2. Check and Install Dependencies
 
-#### `Linux` Installation Instructions
-  ```sh
-  # Install Helm
-  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-  # Install SOPS
-  sudo apt-get install sops
-
-  # Install GPG
-  sudo apt-get install gnupg
-  ```
-
-#### `macOS` Installation Instructions
-  ```sh
-  # Install Helm
-  $ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-  # Install SOPS:
-  $ brew install sops
-
-  # Install GPG:
-  $ brew install gnupg
-  ```
-
-### Step 3: Run Setup Script
-Run the setup script (`setup.sh`) to deploy the Details App:
-
-```sh
-$ chmod +x setup.sh
-$ ./setup.sh
+Run the dependency checker from the **menu** directory:
+```bash
+bash main_menu.sh
 ```
 
-This script will perform encryption and decryption tasks and then deploy the app using Helm.
+The script will:
+- Detect missing dependencies.
+- Provide options to install them based on your operating system.
 
-### Step 4: Verify Deployment
-After running the script, verify the deployment by checking Helm releases:
-```sh
-$ helm list
+### 3. OS-Specific Dependency Installation
+
+#### **macOS**
+Install dependencies using **Homebrew**:
+```bash
+brew install terraform ansible python3 jq
 ```
 
-Ensure the `detailsapp` release is listed and running successfully.
+Install AWS CLI:
+```bash
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
+rm AWSCLIV2.pkg
+```
 
-### Step 5: Access the Application
-Use the configured `ingress` to access the application in your browser.
+#### **Linux (Debian/Ubuntu-based)**
+Install dependencies using `apt`:
+```bash
+sudo apt update
+sudo apt install -y terraform ansible python3 jq
+```
 
-Make sure to check your `Kubernetes` cluster's `ingress` IP to access the `service` using port `8000` for the `DetailApp` and port `5432` for `PostgresSQL`.
+Install AWS CLI:
+```bash
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rf awscliv2.zip aws
+```
+
+#### **Windows (via WSL)**
+Install WSL and set up Ubuntu:
+1. Open PowerShell as Administrator and run:
+   ```powershell
+   wsl --install
+   ```
+
+2. After setting up WSL, follow the **Linux** instructions inside the WSL terminal.
+
+### 4. Configure AWS CLI
+
+Set up AWS credentials for Terraform and Ansible:
+```bash
+aws configure
+```
+
+Provide your:
+- **Access Key ID**
+- **Secret Access Key**
+- **Default region** (e.g., `us-east-1`)
+
+### 5. Run the Main Menu
+
+Start the CloudForge project by running the main menu:
+```bash
+bash main_menu.sh
+```
+
+Follow the interactive prompts to provision infrastructure and configure services.
+
+## Additional Notes
+
+### Browser Configuration
+
+The menu provides options to open URLs in your default browser. Ensure you have:
+- **`xdg-open`** (Linux)
+- **`open`** (macOS)
+- **`wslview`** (Windows/WSL)
+
+If these tools are missing, install them or manually open the provided URLs.
+
+## Support
+
+For any issues or questions, please open an issue on the **CloudForge** repository.
