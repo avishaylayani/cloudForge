@@ -1,6 +1,6 @@
 <img src="../assets/MENU.png" alt="README" style="width: 100%; height: 200px; object-fit: fit;">
 
-| **[README](README.md)** | **[INSTALATION](INSTALATION.md)** | **[CONTRIBUTORS](CONTRIBUTORS.md)** |
+| **[README](../README.md)** | **[INSTALATION](../INSTALATION.md)** | **[CONTRIBUTORS](../CONTRIBUTORS.md)** |
 
 ## Main Menu
 
