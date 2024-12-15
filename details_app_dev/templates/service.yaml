@@ -12,7 +12,7 @@ spec:
     version: latest
   ports:
   - protocol: TCP
-    port: 8000          # External port for latest version
+    port: 9000          # External port for latest version
     targetPort: 8000  # Internal port in the container
 
 ---
