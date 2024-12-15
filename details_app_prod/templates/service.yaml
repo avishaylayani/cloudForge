@@ -6,15 +6,14 @@ metadata:
     app: details-app
     version: latest
 spec:
-  # type: LoadBalancer
+  type: LoadBalancer
   selector:
     app: details-app
-    version: latesta
+    version: latest
   ports:
   - protocol: TCP
     port: 443         # External port for latest version
     targetPort: 8000  # Internal port in the container
-  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
