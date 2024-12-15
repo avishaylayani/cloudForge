@@ -1,4 +1,4 @@
-![k3s_details_app Banner](assets/k3s_details_app.png)
+<img src="assets/README.png" alt="README" style="width: 100%; height: 200px; object-fit: fit;">
 
 | **[INSTALLATION](INSTALLATION.md)** | **[CONTRIBUTORS](CONTRIBUTORS.md)** | **[MENU GUIDE](menu/MENU.md)** |
 
