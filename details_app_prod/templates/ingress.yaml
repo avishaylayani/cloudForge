@@ -1,10 +1,13 @@
 apiVersion: networking.k8s.io/v1
-kind: Ingress
+kind: nginx
 metadata:
   name: details-app-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "cloudforge-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
       - details-app-prod.local

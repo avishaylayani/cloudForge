@@ -6,7 +6,7 @@ metadata:
     app: details-app
     version: latest
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: details-app
     version: latest
