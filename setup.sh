@@ -41,7 +41,7 @@ helm install \
   --create-namespace \
   --version v1.16.2 \
   --set crds.enabled=true \
-  --set prometheus.enabled=false \  # Example: disabling prometheus using a Helm parameter
+  --set prometheus.enabled=false \
   --set webhook.timeoutSeconds=4
 
 # Deploy details_app using Helm - deletes values file 
