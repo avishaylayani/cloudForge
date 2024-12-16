@@ -6,6 +6,8 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     kubernetes.io/ingress.class: traefik
+  labels:
+    app: nginx
 spec:
   rules:
   - host: details-app-prod.local
