@@ -5,6 +5,10 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  tls:
+    - hosts:
+      - dev-cloudforge.duckdns.org
+      secretName: details-app-dev-tls
   rules:
   - host: dev-cloudforge.duckdns.org
     http:
@@ -13,6 +17,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: details-app-dev-service
+            name: details-app-dev-service-latest
             port:
-              number: 8000
+              number: 8001

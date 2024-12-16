@@ -6,13 +6,13 @@ metadata:
     app: details-app-dev
     version: latest
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: details-app-dev
     version: latest
   ports:
   - protocol: TCP
-    port: 80          # External port for latest version
+    port: 8001          # External port for latest version
     targetPort: 8000  # Internal port in the container
 
 ---
