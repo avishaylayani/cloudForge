@@ -8,7 +8,7 @@ spec:
   tls:
     - hosts:
       - dev-cloudforge.duckdns.org
-      secretName: details-app-tls
+      secretName: details-app-dev-tls
   rules:
   - host: dev-cloudforge.duckdns.org
     http:
