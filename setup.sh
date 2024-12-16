@@ -27,6 +27,7 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 ( sops -d $workdir/values_encrypted_dev.yaml > $workdir/details_app_dev/values.yaml && sops -d $workdir/values_encrypted_prod.yaml > $workdir/details_app_prod/values.yaml && eval "$cleaning_secret_key" && echo "[+] values file decrypted successfully") || \
 ( echo "[-] Something went wrong with decryption process, exiting" && eval "$cleaning_secret_key" && exit 1 )   
 
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.crds.yaml
 
 # Deploy details_app using Helm - deletes values file 
 ( helm install details-app-prod $workdir/details_app_prod && rm -rf $workdir/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
