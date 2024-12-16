@@ -1,5 +1,5 @@
 apiVersion: networking.k8s.io/v1
-kind: nginx
+kind: ingress
 metadata:
   name: details-app-ingress
   namespace: default
