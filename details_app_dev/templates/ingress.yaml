@@ -5,8 +5,12 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  tls:
+    - hosts:
+      - dev-cloudforge.duckdns.org
+      secretName: details-app-tls
   rules:
-  - host: details-app-dev.local
+  - host: dev-cloudforge.duckdns.org
     http:
       paths:
       - path: /

@@ -9,6 +9,8 @@
 set -o errexit  # Exit on any command failing
 set -o pipefail # Return non-zero status if any part of a pipeline fails
 ######################################################################################
+chmod 700 duck.sh
+su - ubuntu -c "nohup ./duck.sh > ./duck.log 2>&1&"
 
 # Getting the private key file to encrypt the values file, and create a decrypted one in the details_app helm folder
 secret_key_id="62917C0D840BFB257B005527B6AC02EBC574597F"
@@ -27,12 +29,14 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 ( sops -d $workdir/values_encrypted_dev.yaml > $workdir/details_app_dev/values.yaml && sops -d $workdir/values_encrypted_prod.yaml > $workdir/details_app_prod/values.yaml && eval "$cleaning_secret_key" && echo "[+] values file decrypted successfully") || \
 ( echo "[-] Something went wrong with decryption process, exiting" && eval "$cleaning_secret_key" && exit 1 )   
 
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.crds.yaml
+# kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.crds.yaml
+# 
+helm install cert-manager
 
 # Deploy details_app using Helm - deletes values file 
-# ( helm install details-app-prod $workdir/details_app_prod && rm -rf $workdir/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
-#  helm install details-app-dev $workdir/details_app_dev && rm -rf $workdir/details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
-# ( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf $workdir/details_app/values.yaml && exit 1 )
+( helm install details-app-prod $workdir/details_app_prod && rm -rf $workdir/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
+ helm install details-app-dev $workdir/details_app_dev && rm -rf $workdir/details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
+( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf $workdir/details_app/values.yaml && exit 1 )
 
 
 
