@@ -32,7 +32,13 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 # kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.crds.yaml
 # 
 helm repo add jetstack https://charts.jetstack.io --force-update
-helm install cert-manager jetstack/cert-manager
+helm repo update
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.16.2 \
+  --set crds.enabled=true
 
 # Deploy details_app using Helm - deletes values file 
 ( helm install details-app-prod $workdir/details_app_prod && rm -rf $workdir/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
