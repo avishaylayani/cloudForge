@@ -27,6 +27,14 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 ( sops -d $workdir/values_encrypted_dev.yaml > $workdir/details_app_dev/values.yaml && sops -d $workdir/values_encrypted_prod.yaml > $workdir/details_app_prod/values.yaml && eval "$cleaning_secret_key" && echo "[+] values file decrypted successfully") || \
 ( echo "[-] Something went wrong with decryption process, exiting" && eval "$cleaning_secret_key" && exit 1 )   
 
+## Helm dependencies for TLS
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+helm install \
+ cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --set installCRDs=true
 
 # Deploy details_app using Helm - deletes values file 
 ( helm install details-app-prod $workdir/details_app_prod && rm -rf $workdir/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
