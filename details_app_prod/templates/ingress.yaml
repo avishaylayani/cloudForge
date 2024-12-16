@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
     - hosts:
-      - details-app-prod.local
+      - cloudforge-il.duckdns.org
       secretName: details-app-tls
   rules:
-  - host: details-app-prod.local
+  - host: cloudforge-il.duckdns.org
     http:
       paths:
       - path: /

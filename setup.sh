@@ -30,9 +30,9 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.crds.yaml
 
 # Deploy details_app using Helm - deletes values file 
-( helm install details-app-prod $workdir/details_app_prod && rm -rf $workdir/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
- helm install details-app-dev $workdir/details_app_dev && rm -rf $workdir/details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
-( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf $workdir/details_app/values.yaml && exit 1 )
+# ( helm install details-app-prod $workdir/details_app_prod && rm -rf $workdir/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
+#  helm install details-app-dev $workdir/details_app_dev && rm -rf $workdir/details_app_dev/values.yaml && echo "[+] Dev Deployment succeded" ) || \
+# ( echo "[-] Something went wrong with installing helm chart, existing" && rm -rf $workdir/details_app/values.yaml && exit 1 )
 
 
 
