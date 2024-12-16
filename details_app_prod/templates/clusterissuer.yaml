@@ -10,6 +10,6 @@ spec:
       name: letsencrypt-prod-key
     solvers:
     - selector: {}
-      - http01:
-          ingress:
-            class: traefik
+      http01:
+        ingress:
+          class: traefik
