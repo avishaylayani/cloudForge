@@ -9,8 +9,10 @@
 set -o errexit  # Exit on any command failing
 set -o pipefail # Return non-zero status if any part of a pipeline fails
 ######################################################################################
-chmod 700 duck.sh
-sudo su - ubuntu -c "nohup ./duck.sh > ./duck.log 2>&1&"
+
+# Update duckdns
+echo url="https://www.duckdns.org/update?domains=prod-cloudforge&token=d743e5a8-5cfa-46aa-82f9-65f1969ed90d&ip=" | curl -k -o duck_prod.log -K -
+echo url="https://www.duckdns.org/update?domains=dev-cloudforge&token=d743e5a8-5cfa-46aa-82f9-65f1969ed90d&ip=" | curl -k -o duck_dev.log -K -
 
 # Getting the private key file to encrypt the values file, and create a decrypted one in the details_app helm folder
 secret_key_id="62917C0D840BFB257B005527B6AC02EBC574597F"
@@ -30,14 +32,14 @@ cleaning_secret_key="gpg --batch --yes --delete-secret-key $secret_key_id 2> /de
 ( echo "[-] Something went wrong with decryption process, exiting" && eval "$cleaning_secret_key" && exit 1 )   
 
 # kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.crds.yaml
-# 
+
 helm repo add jetstack https://charts.jetstack.io --force-update
 helm repo update
 helm install \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.16.2 \
+  --version v1.13.0 \
   --set crds.enabled=true
 
 # Deploy details_app using Helm - deletes values file 
