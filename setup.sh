@@ -39,8 +39,10 @@ helm install \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.13.0 \
-  --set crds.enabled=true
+  --version v1.16.2 \
+  --set crds.enabled=true \
+  --set prometheus.enabled=false \  # Example: disabling prometheus using a Helm parameter
+  --set webhook.timeoutSeconds=4
 
 # Deploy details_app using Helm - deletes values file 
 ( helm install details-app-prod $workdir/details_app_prod && rm -rf $workdir/details_app_prod/values.yaml && echo "[+] Production Deployment succeded" && \
