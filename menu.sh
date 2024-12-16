@@ -72,14 +72,14 @@ main_menu() {
             else
                 echo -e "$(colorize 'Opening Prod Env URL...' 'magenta')"
                 sleep 0.6
-                open_url "https://prod.${K3S_MASTER_IP}"
+                open_url "https://prod-cloudforge.duckdns.org/"
             fi ;;
         6)  if [[ -z $K3S_MASTER_IP ]]; then
                 echo -e "$(colorize 'Error: K3S_MASTER_IP is not set! Please run K3S setup first.' 'red')"
             else
                 echo -e "$(colorize 'Opening Dev Env URL...' 'magenta')"
                 sleep 0.6
-                open_url "https://dev.${K3S_MASTER_IP}"
+                open_url "https://dev-cloudforge.duckdns.org/"
             fi ;;
         7) terraform_destroy ;;
         0) echo -e "$(colorize 'Exiting...' 'magenta')" && sleep 0.6 && exit ;;

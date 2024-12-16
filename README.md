@@ -6,6 +6,69 @@
 
 CloudForge is an infrastructure automation project designed to simplify cloud provisioning, configuration management, and Kubernetes cluster management. The project leverages tools like **Terraform**, **Ansible**, and **K3S** for infrastructure-as-code and deployment automation.
 
+# CloudForge Project Diagram
+
+```plaintext
+                +------------------+
+                |      GIT         |
+                +------------------+
+                        v
+                        v
+                +------------------+
+                |   Terraform      |
+                |  (S3 Bucket)     |
+                +------------------+
+                        v
+                        v
+                +------------------+
+                |  Terraform State |
+                | (Infrastructure) |
+                +------------------+
+                        v
+                        v
+            +<<<<<<<<<<<+>>>>>>>>>>>+
+            v                       v
+            v                       v
+    +------------------+    +------------------+
+    |     Ansible      |    |     CI/CD Tool   |
+    |  Install K3S     |    |  (Deployments)   |>>>>>>>>>>>>>>>>>>>>>>+
+    +------------------+    +------------------+                      v
+            v                       v                                 v
+            v                       v                                 v
+            +>>>>>>>>>>>+<<<<<<<<<<<+                                 v      
+                        v                                             v
+                        v                                             v
+    +------------------------------------------+                      v
+    |               AWS EC2 Nodes              |                      v
+    |            (3 Instances Total)           |                      v
+    +------------------------------------------+                      v
+                        v                                             v
+                        v                                             v
+    +------------------------------------------+                      v
+    |             K3S Master Node              | <<<<<<<<<<<<<<<<<<<<<+              
+    |                                          |        
+    |             Manages Cluster              | <<<<<<<<<<<<<<<<<<<<<+             
+    +------------------------------------------+                      v   
+                        v                                             v 
+                        v                             +----------------------------------+
+            +<<<<<<<<<<<+>>>>>>>>>>>+                 |  www.prod-cloudforge.duckdns.org |    
+            v                       v                 |  www.dev-cloudforge.duckdns.org  |        
+            v                       v                 +----------------------------------+        
+    +------------------+    +------------------+               
+    |   K3S Worker     |    |   K3S Worker     |    
+    |   Node (Dev)     |    |   Node (Prod)    |    
+    |------------------|    |------------------|    
+    |  - PSQL (Dev)    |    |  - PSQL (Prod)   |    
+    |  - Dev Apps      |    |  - Prod Apps     |    
+    +------------------+    +------------------+    
+            v                       v            
+            v                       v            
+    +------------------+    +------------------+       
+    |  Dev PostgreSQL  |    |  Prod PostgreSQL |       
+    |   (on Dev Node)  |    |   (on Prod Node) |       
+    +------------------+    +------------------+       
+```
+
 ## Features
 
 - Automated provisioning of AWS infrastructure using Terraform.

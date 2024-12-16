@@ -47,7 +47,8 @@ terraform_destroy() {
         # Delete all objects and object versions from the bucket
         aws s3api delete-objects --bucket "$BUCKET_NAME" --delete \
             "$(aws s3api list-object-versions --bucket "$BUCKET_NAME" \
-            --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}' | jq -c '{Objects: .Objects, Quiet: false}')" \
+            --query '{Objects: Versions[].{Key:Key,VersionId:VersionId}}' \
+            --no-paginate | jq -c '{Objects: .Objects, Quiet: false}')" \
             || echo -e "$(colorize 'Failed to delete objects from the bucket. Continuing with destroy.' 'red')" && sleep 0.6
     else
         echo -e "$(colorize 'Bucket name is empty. Skipping bucket cleanup.' 'red')" && sleep 0.6
