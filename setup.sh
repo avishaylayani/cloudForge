@@ -10,7 +10,7 @@ set -o errexit  # Exit on any command failing
 set -o pipefail # Return non-zero status if any part of a pipeline fails
 ######################################################################################
 chmod 700 duck.sh
-su - ubuntu -c "nohup ./duck.sh > ./duck.log 2>&1&"
+sudo su - ubuntu -c "nohup ./duck.sh > ./duck.log 2>&1&"
 
 # Getting the private key file to encrypt the values file, and create a decrypted one in the details_app helm folder
 secret_key_id="62917C0D840BFB257B005527B6AC02EBC574597F"
