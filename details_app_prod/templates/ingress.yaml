@@ -5,22 +5,20 @@ metadata:
   namespace: default
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/ingress.class: traefik
 spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-      - details-app-prod.local
-      secretName: details-app-tls
   rules:
   - host: details-app-prod.local
     http:
       paths:
-      - path: /
-        pathType: Prefix
-        backend:
+      - backend:
           service:
             name: details-app-service
             port:
               number: 8000
+        path: /
+        pathType: Prefix
+  tls:
+    - hosts:
+      - details-app-prod.local
+      secretName: details-app-tls
